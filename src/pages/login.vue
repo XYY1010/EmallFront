@@ -33,7 +33,7 @@
 
           <div style="margin-top:10px;">
     				<a href="#">忘记登录密码</a>
-    				<a href="#" class="float-right">免费注册</a>
+    				<a href="javascript:void(0);" class="float-right" @click="register();">免费注册</a>
     			</div>
     		</div>
     	</Form>
@@ -74,7 +74,10 @@ export default {
         } else {
           this.$Message.error('登录失败！');
         }
-      })
+      });
+    },
+    register() {
+      this.$router.push('/register');
     }
   },
   components: {

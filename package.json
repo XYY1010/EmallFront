@@ -15,7 +15,8 @@
     "iview": "^3.1.5",
     "popper.js": "^1.12.9",
     "vue": "^2.5.3",
-    "vue-router": "^3.0.2"
+    "vue-router": "^3.0.2",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

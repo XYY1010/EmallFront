@@ -102,7 +102,7 @@ export default {
 .loginSmallDiv {
 	background-color: white;
 	position: absolute;
-	right: 180px;
+	right: 150px;
 	top: 180px;
 	width: 350px;
 	height: 400px;

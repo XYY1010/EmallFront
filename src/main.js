@@ -31,6 +31,15 @@ Vue.use(iView);
 //   }
 // });
 
+router.beforeEach((to, from, next) => {
+  iView.LoadingBar.start();
+  next();
+});
+
+router.afterEach(route => {
+  iView.LoadingBar.finish();
+});
+
 new Vue({
   el: '#app',
   router,

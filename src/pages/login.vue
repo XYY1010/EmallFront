@@ -87,9 +87,8 @@ export default {
 </script>
 
 <style scoped>
-
 .simpleLogo {
-  padding: 32px 50px;
+  padding: 32px 80px;
 }
 
 .loginBackground {
@@ -103,7 +102,7 @@ export default {
 .loginSmallDiv {
 	background-color: white;
 	position: absolute;
-	right: 100px;
+	right: 180px;
 	top: 180px;
 	width: 350px;
 	height: 400px;

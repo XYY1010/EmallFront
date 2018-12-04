@@ -3,8 +3,8 @@
    <div class="copyright" id="copyright">
      <div class="copyrightMiddle">
        <div class="license">
-         <span>增值电信业务经营许可证： 浙B2-20110446</span> <span class="slash">|</span>
-         <span>网络文化经营许可证：浙网文[2015]0295-065号</span>
+         <span>增值电信业务经营许可证： 浙B5-20180446</span> <span class="slash">|</span>
+         <span>网络文化经营许可证：浙网文[2018]0295-065号</span>
          <div class="copyRightYear">&copy; 2018-2019 EMALL.com 版权所有</div>
          <div>
            <img src="../../assets/copyRight1.jpg">

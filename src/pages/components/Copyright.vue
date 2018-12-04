@@ -39,11 +39,11 @@
        </div>
 
        <div class="license">
-         <span>增值电信业务经营许可证： 浙B2-20110446</span>
-         <span>网络文化经营许可证：浙网文[2015]0295-065号</span>
+         <span>增值电信业务经营许可证： 浙B5-20180446</span>
+         <span>网络文化经营许可证：浙网文[2018]0295-065号</span>
          <span>互联网医疗保健信息服务 审核同意书 浙卫网审【2014】6号 </span>
          <span>互联网药品信息服务资质证书编号：浙-（经营性）-2012-0005</span>
-         <div class="copyRightYear">&copy; 2003-2016 TMALL.com 版权所有</div>
+         <div class="copyRightYear">&copy; 2018-2019 EMALL.com 版权所有</div>
          <div>
            <img src="../../assets/copyRight1.jpg">
            <img src="../../assets/copyRight2.jpg">

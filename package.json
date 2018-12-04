@@ -12,6 +12,7 @@
     "bootstrap": "^4.0.0-beta.2",
     "bootstrap-vue": "^1.2.0",
     "element-ui": "^2.4.11",
+    "iview": "^3.1.5",
     "popper.js": "^1.12.9",
     "vue": "^2.5.3",
     "vue-router": "^3.0.2"

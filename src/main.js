@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './routes/router'
 import iView from 'iview';
 import store from './vuex';
+// import axios from './axio_config.js';
 import 'iview/dist/styles/iview.css';
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"

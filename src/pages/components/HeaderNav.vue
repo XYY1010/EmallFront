@@ -6,10 +6,10 @@
         EMALL首页
       </a>
       <span>Hi, 欢迎来到EMALL</span>
-      <a href="#">
+      <a href="javascript:void(0);" @click="toLogin()">
         请登录
       </a>
-      <a href="#">
+      <a href="javascript:void(0);" @click="toRegister()">
         免费注册
       </a>
 
@@ -30,6 +30,14 @@ export default {
   data() {
     return {
 
+    }
+  },
+  methods: {
+    toLogin() {
+      this.$router.push('/login');
+    },
+    toRegister() {
+      this.$router.push('/register');
     }
   }
 }

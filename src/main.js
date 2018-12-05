@@ -1,14 +1,14 @@
-import Vue from 'vue'
-import BootstrapVue from "bootstrap-vue"
+import Vue from 'vue';
+import BootstrapVue from "bootstrap-vue";
 import ElementUI from 'element-ui';
-import App from './App.vue'
-import router from './routes/router'
+import App from './App.vue';
+import router from './routes/router';
 import iView from 'iview';
 import store from './vuex';
 // import axios from './axio_config.js';
 import 'iview/dist/styles/iview.css';
-import "bootstrap/dist/css/bootstrap.min.css"
-import "bootstrap-vue/dist/bootstrap-vue.css"
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(BootstrapVue);

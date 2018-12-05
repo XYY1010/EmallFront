@@ -2,8 +2,7 @@
   <div class="headerNav">
     <nav class="top">
       <a href="#">
-        <i class="el-icon-goods"></i>
-        EMALL首页
+        <Icon type="ios-home" style="margin-top: -1px;"/>EMALL首页
       </a>
       <span>Hi, 欢迎来到EMALL</span>
       <a href="javascript:void(0);" @click="toLogin()">
@@ -17,7 +16,7 @@
         <a href="#">
           我的订单
         </a>
-        <i class="el-icon-sold-out"></i>
+        <Icon type="md-cart" style="margin-top: -1px;"/>
         购物车<strong>0</strong>件
       </span>
     </nav>

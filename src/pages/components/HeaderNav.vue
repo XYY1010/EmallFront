@@ -2,7 +2,7 @@
   <div class="head">
     <div class="headerNav">
       <nav class="top">
-        <a href="#">
+        <a href="javascript:void(0);" @click="jumpToIndex()">
           <Icon type="ios-home" style="margin-top: -1px;"/>EMALL首页
         </a>
         <span>Hi, 欢迎来到EMALL</span>
@@ -32,7 +32,8 @@
                   </div>
                   <div class="shopping-cart-info">
                     <div class="shopping-cart-title">
-                      <p><font style="color:black; weight:bolder;"size="2">{{item.title.substring(0, 12)}}...</font></p>
+                      <p v-if="item.title.length>13"><font style="color:black; weight:bolder;"size="2">{{item.title.substring(0, 12)}}...</font></p>
+                      <p v-if="item.title.length<=13"><font style="color:black; weight:bolder;"size="2">{{item.title}}</font></p>
                     </div>
                     <div class="shopping-cart-detail">
                       <p>
@@ -44,7 +45,7 @@
                       <p>
                         数量：
                         <span class="shopping-cart-text">
-                          <font style="color:orange;">{{item.count}}件</font>
+                          <font style="color:orange;">{{item.amount}}件</font>
                         </span>
                       </p>
                       <p>
@@ -56,9 +57,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="go-to-pay">
-                  <Button type="warning" size="small" @click="goToPay">
-                    去结算
+                <div class="check-cart">
+                  <Button type="warning" size="small" @click="checkCart">
+                    查看购物车
                   </Button>
                 </div>
               </div>
@@ -81,7 +82,7 @@ export default {
       shoppingCart: [
         {
           goods_id: '13212313213',
-          count: 1,
+          amount: 1,
           imgUrl: 'http://139.199.125.60/bxjg.jpg',
           requirement: '白色 威震天',
           price: 2800.00,
@@ -89,11 +90,19 @@ export default {
         },
         {
           goods_id: '13212123211',
-          count: 10,
+          amount: 10,
           imgUrl: 'http://139.199.125.60/bijiben13.3.jpg',
           requirement: '银色 13.3寸 i5',
-          price: 55000.00,
+          price: 5500.00,
           title: '小米笔记本'
+        },
+        {
+          goods_id: '13211223658',
+          amount: 1,
+          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
+          requirement: '黑色 43寸 xmtv4a',
+          price: 2200.00,
+          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
         }
       ]
     }
@@ -105,8 +114,11 @@ export default {
     toRegister() {
       this.$router.push('/register');
     },
-    goToPay() {
-
+    checkCart() {
+      this.$router.push('/shoppingcart');
+    },
+    jumpToIndex() {
+      this.$router.push('/');
     }
   }
 }
@@ -165,6 +177,8 @@ export default {
     }
     .shopping-cart-list {
       padding: 3px 15px;
+      height:150px;
+      overflow: auto;
     }
     .shopping-cart-box {
       margin: 8px 0px;
@@ -208,7 +222,7 @@ export default {
     .shopping-cart-text {
       color: #ccc;
     }
-    .go-to-pay {
+    .check-cart {
       display: flex;
       justify-content: flex-end;
     }

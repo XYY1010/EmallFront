@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Login from '../pages/login.vue';
 import Register from '../pages/register.vue';
 import Index from '../pages/views/index.vue'
+import ShoppingCart from '../pages/views/shoppingcart.vue'
 
 Vue.use(Router)
 
@@ -25,6 +26,10 @@ const router = new Router({
       path: '/index',
       name:'index',
       component: Index
+    }, {
+      path: '/shoppingcart',
+      name: 'shoppingcart',
+      component: ShoppingCart
     }
   ]
 })

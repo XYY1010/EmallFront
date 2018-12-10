@@ -5,7 +5,7 @@
     <Alert show-icon class="tips-box" type="warning">
         小提示
         <Icon type="md-bulb" slot="icon"></Icon>
-        <template slot="desc">请点击商品前的选择框，选择购物车中的商品，点击付款即可。</template>
+        <template slot="desc">请点击商品前的选择框，选择购物车中的商品，点击结算即可。</template>
     </Alert>
     <Modal
         v-model="modelStatus"

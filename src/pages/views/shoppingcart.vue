@@ -1,7 +1,8 @@
 <template>
-  <div class="shopping-cart-div">
+  <div>
     <HeaderNav/>
     <ShoppingCartSearch/>
+  <div class="shopping-cart-div">
     <Alert show-icon class="tips-box" type="warning">
         小提示
         <Icon type="md-bulb" slot="icon"></Icon>
@@ -24,11 +25,14 @@
       </div>
     </div>
   </div>
+  <SimpleCopyright/>
+  </div>
 </template>
 
 <script>
 import HeaderNav from '../components/HeaderNav.vue'
 import ShoppingCartSearch from '../components/ShoppingCartSearch.vue'
+import SimpleCopyright from '../components/SimpleCopyright.vue'
 export default {
   name: 'shoppingcart',
   data() {
@@ -229,7 +233,8 @@ export default {
   },
   components: {
     HeaderNav,
-    ShoppingCartSearch
+    ShoppingCartSearch,
+    SimpleCopyright
   },
   computed: {
     totalPrice() {

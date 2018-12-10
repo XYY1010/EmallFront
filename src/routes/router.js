@@ -2,8 +2,10 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '../pages/login.vue';
 import Register from '../pages/register.vue';
-import Index from '../pages/views/index.vue'
-import ShoppingCart from '../pages/views/shoppingcart.vue'
+import Index from '../pages/views/index.vue';
+import ShoppingCart from '../pages/views/shoppingcart.vue';
+import GoodsDetail from '../pages/views/goodsdetail.vue';
+import GoodsList from '../pages/views/goodslist.vue'
 
 Vue.use(Router)
 
@@ -30,6 +32,14 @@ const router = new Router({
       path: '/shoppingcart',
       name: 'shoppingcart',
       component: ShoppingCart
+    }, {
+      path: '/goodsdetail',
+      name: 'goodsdetail',
+      component: GoodsDetail
+    }, {
+      path: '/goodslist',
+      name: 'goodslist',
+      component: GoodsList
     }
   ]
 })

@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import Login from '../pages/login.vue';
 import Register from '../pages/register.vue';
 import Index from '../pages/views/index.vue'
-import GoodsList from '../pages/views/GoodsList.vue'
+import ShoppingCart from '../pages/views/shoppingcart.vue'
 
 Vue.use(Router)
 
@@ -13,7 +13,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/index'
     }, {
       path: '/login',
       name: 'login',
@@ -27,9 +27,9 @@ const router = new Router({
       name:'index',
       component: Index
     }, {
-      path: '/goodsList', // 商品列表
-      name: 'GoodsList',
-      component: GoodsList
+      path: '/shoppingcart',
+      name: 'shoppingcart',
+      component: ShoppingCart
     }
   ]
 })

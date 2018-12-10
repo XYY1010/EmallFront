@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <div class="searchBar">
   <a href="#">
-    <img src="../../assets/logo.gif" class="logo" id="logo">
+    <img src="../../assets/EmallIcon.png" class="logo" id="logo">
   </a>
   <div class="searchDiv">
-    <input type="text" placeholder="搜索 天猫 商店/品牌/店铺" name="keyword">
-    <button class="searchButton" type="submit" @click='search'>搜索</button>
+    <input type="text" placeholder="搜索 EMALL 商店/品牌" name="keyword">
+    <button class="searchButton" type="submit">搜索</button>
     <div class="searchBelow">
-      <span><a href="#">针织衫</a><span>|</span></span>
-      <span><a href="#">连衣裙</a><span>|</span></span>
-      <span><a href="#">四件套</a><span>|</span></span>
-      <span><a href="#">摄像头</a><span>|</span></span>
+      <span><a href="#">手机</a><span>|</span></span>
+      <span><a href="#">电脑</a><span>|</span></span>
+      <span><a href="#">单反</a><span>|</span></span>
+      <span><a href="#">xbox</a><span>|</span></span>
     </div>
   </div>
 </div>
@@ -18,16 +18,16 @@
 
 <script>
 export default {
-  name: 'SearchBar',
-  methods: {
-    search: function() {
-      this.$router.push('/goodsList')
-    }
-  }
 }
 </script>
 
 <style scoped>
+  .searchBar {
+    position: relative;
+    width: 1226px;
+    height: auto;
+    margin: 0 auto;
+  }
   .searchDiv {
     background: #A013EB;
     width: 400px;
@@ -64,8 +64,8 @@ export default {
   }
   .logo {
     position: absolute;
-    left: 20px;
-    top: 30px;
+    left: 0px;
+    top: 0px;
     z-index: -1;
   }
   body {

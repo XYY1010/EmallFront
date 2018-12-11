@@ -4,7 +4,8 @@ const state = {
         userName: '',
         phone: '',
         address: '',
-        email: ''
+        email: '',
+        avatarSrc: ''
     }
 }
 const getters = {

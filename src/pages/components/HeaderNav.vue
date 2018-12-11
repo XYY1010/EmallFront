@@ -2,20 +2,38 @@
   <div class="head">
     <div class="headerNav">
       <nav class="top">
-        <a href="javascript:void(0);" @click="jumpToIndex()">
+        <a href="javascript:void(0);" @click="toIndex()">
           <Icon type="ios-home" style="margin-top: -1px;"/>EMALL首页
         </a>
-        <span>Hi, 欢迎来到EMALL</span>
-        <a href="javascript:void(0);" @click="toLogin()">
-          请登录
-        </a>
-        <a href="javascript:void(0);" @click="toRegister()">
-          免费注册
-        </a>
+        <template v-if="userInfo === null">
+          <span>Hi, 欢迎来到EMALL</span>
+          <a href="javascript:void(0);" @click="toLogin()">
+            请登录
+          </a>
+          <a href="javascript:void(0);" @click="toRegister()">
+            免费注册
+          </a>
+        </template>
+        <template v-if="userInfo !== null">
+          <span>Hi, {{userInfo.userName}}</span>
+          <Dropdown placement="bottom-start">
+            <a href="javascript:void(0);" @click="toUserCenter()">会员中心</a>
+            <DropdownMenu slot="list">
+              <div class="user-info-box">
+                <Avatar v-if="userInfo.avatarSrc !== ''" :src="userInfo.avatarSrc" size="large"></Avatar>
+                <Avatar v-if="userInfo.avatarSrc === ''" style="background-color: #87d068; color: #FFFFFF" icon="ios-person" size="large"/>
+                <a href="javascript:void(0);" @click="toLogin()">退出登录</a>
+              </div>
+            </DropdownMenu>
+          </Dropdown>
+        </template>
 
         <span class="float-right">
-          <Dropdown placement="bottom-start">
-            <a href="javascript:void(0);">
+          <a href="#">
+            我的订单
+          </a>
+          <Dropdown placement="bottom-end">
+            <a href="javascript:void(0);" @click="toShoppingcart()">
               <Icon type="md-cart" style="margin-top: -1px;"/>
               购物车<strong>{{shoppingCart.length}}</strong>件
             </a>
@@ -65,9 +83,6 @@
               </div>
             </DropdownMenu>
           </Dropdown>
-          <a href="#">
-            我的订单
-          </a>
         </span>
       </nav>
     </div>
@@ -104,7 +119,8 @@ export default {
           price: 2200.00,
           title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
         }
-      ]
+      ],
+      userInfo: {}
     }
   },
   methods: {
@@ -114,12 +130,21 @@ export default {
     toRegister() {
       this.$router.push('/register');
     },
+    toUserCenter() {
+      this.$router.push('/usercenter/usercontrol');
+    },
     checkCart() {
       this.$router.push('/shoppingcart');
     },
-    jumpToIndex() {
+    toIndex() {
       this.$router.push('/');
+    },
+    toShoppingcart() {
+      this.$router.push('/shoppingcart');
     }
+  },
+  mounted() {
+    this.userInfo = this.$store.getters.user;
   }
 }
 </script>
@@ -158,6 +183,11 @@ export default {
       color: #A013EB;
       text-decoration: none;
     }
+
+    .user-info-box {
+      padding: 5px;
+    }
+
     .shopping-cart-null {
       padding: 15px;
       display: flex;

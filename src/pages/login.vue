@@ -68,6 +68,14 @@ export default {
         if (valid) {
           console.log(this.form);
           this.$Message.success('登录成功！');
+          this.$store.commit('initUser', {user: {
+              userId: '1',
+              userName: this.form.user,
+              phone: '1223123',
+              address: '12312312',
+              email: '123123123',
+              avatarSrc: 'https://raw.githubusercontent.com/XYY1010/WebImgSrc/master/test/3.jpg'
+          }});
           setTimeout(() => {
             this.$router.push('/index');
           }, 1000);

@@ -66,7 +66,6 @@ export default {
     width: 140px;
     height: 140px;
     margin: 10px 20px;
-    text-align: center;
   }
   .router-link-style {
     color: #222;

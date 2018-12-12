@@ -1,6 +1,6 @@
 <template>
   <div class="base-info-div">
-    <Alert show-icon class="tips-box" type="warning">
+    <Alert show-icon class="tips-box" closable type="warning">
         小提示
         <Icon type="md-bulb" slot="icon"></Icon>
         <template slot="desc">亲爱的{{userInfo.userName}}，请填写真实信息，方便好友找到你哦~~</template>

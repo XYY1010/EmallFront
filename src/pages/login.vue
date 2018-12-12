@@ -71,9 +71,10 @@ export default {
           this.$store.commit('initUser', {user: {
               userId: '1',
               userName: this.form.user,
-              phone: '1223123',
-              address: '12312312',
-              email: '123123123',
+              password: this.form.password,
+              phone: '17845897418',
+              address: ['浙江省', '宁波市', '鄞州区'],
+              email: 'zsvip@163.com',
               avatarSrc: 'https://raw.githubusercontent.com/XYY1010/WebImgSrc/master/test/3.jpg'
           }});
           setTimeout(() => {

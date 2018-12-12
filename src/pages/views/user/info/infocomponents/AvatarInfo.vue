@@ -1,6 +1,6 @@
 <template>
   <div class="avatar-info-div">
-    <Alert show-icon class="tips-box" type="warning">
+    <Alert show-icon class="tips-box" closable type="warning">
         小提示
         <Icon type="md-bulb" slot="icon"></Icon>
         <template slot="desc">点击上传区域或拖拽图片入区域进行上传！</template>

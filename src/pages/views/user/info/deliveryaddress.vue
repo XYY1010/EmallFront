@@ -24,7 +24,7 @@
           </FormItem>
         </Form>
 
-        <Alert show-icon>已保存了{{addressTable.length}}条地址，还能保存{{11-addressTable.length}}条地址</Alert>
+        <Alert show-icon>已保存了 {{addressTable.length}} 条地址，还能保存 {{11-addressTable.length}} 条地址</Alert>
 
         <Table border :columns="columns" :data="addressTable" :loading="loading" no-data-text="暂无收货地址 请尽快添加~"></Table>
       </div>

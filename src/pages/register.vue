@@ -102,6 +102,7 @@ export default {
           this.$Message.error('注册失败！');
         }
       });
+      this.$refs[e].resetFields();
     }
   },
   components: {

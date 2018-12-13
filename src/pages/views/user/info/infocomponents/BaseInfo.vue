@@ -80,6 +80,7 @@ export default {
           this.$Message.error('保存失败！');
         }
       });
+      this.$refs[e].resetFields();
     }
   },
   mounted() {

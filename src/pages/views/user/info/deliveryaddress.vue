@@ -11,7 +11,7 @@
             <Input v-model="formItem.addressDetail" style="width: 400px;" type="textarea" placeholder="请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元等信息" :rows="3"/>
           </FormItem>
           <FormItem label="邮政编码：">
-            <Input v-model="formItem.postcode" style="width: 400px;" placeholder="请填写邮政编码 默认为：0000"/>
+            <Input v-model="formItem.postcode" style="width: 400px;" placeholder="请填写邮政编码 默认为：000000"/>
           </FormItem>
           <FormItem label="收货人姓名：" prop="receiverName">
             <Input v-model="formItem.receiverName" style="width: 400px;" placeholder="长度不超过25个字符"/>
@@ -123,6 +123,7 @@ export default {
         {
           title: ' ',
           key: 'defaultAddress',
+          width: 120,
           align: 'center',
           render: (h, params) => {
             if (params.row.defaultAddress) {
@@ -140,6 +141,7 @@ export default {
                   on: {
                     click: () => {
                       this.changeDefaultAddress(params.index);
+                      this.$Message.success('默认地址修改成功！');
                     }
                   }
                 }, '设为默认地址')
@@ -201,14 +203,20 @@ export default {
       this.$refs[e].validate((valid) => {
           if (valid) {
             let address = '';
+            let postcode = '';
             for (let i = 0; i < this.formItem.addressInfo.length; i++) {
               address += this.formItem.addressInfo[i] + ' ';
+            }
+            if (this.formItem.postcode == "") {
+              postcode = "000000";
+            } else {
+              postcode = this.formItem.postcode;
             }
             var newAddressInfo = {
               receiverName: this.formItem.receiverName,
               addressInfo: address,
               addressDetail: this.formItem.addressDetail,
-              postcode: this.formItem.postcode,
+              postcode: postcode,
               phone: this.formItem.phone,
               defaultAddress: false
             }
@@ -219,6 +227,7 @@ export default {
             this.$Message.error('新增失败！');
           }
         });
+      this.$refs[e].resetFields();
     },
     remove(index) {
       this.addressTable.splice(index, 1);

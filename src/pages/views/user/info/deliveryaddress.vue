@@ -27,6 +27,14 @@
         <Alert show-icon>已保存了 {{addressTable.length}} 条地址，还能保存 {{11-addressTable.length}} 条地址</Alert>
 
         <Table border :columns="columns" :data="addressTable" :loading="loading" no-data-text="暂无收货地址 请尽快添加~"></Table>
+
+        <Modal
+            v-model="modalStatus"
+            title="提示"
+            @on-ok="ok"
+            @on-cancel="cancel">
+            <p>确定将该商品从购物车中移除吗？</p>
+        </Modal>
       </div>
     </div>
 </template>
@@ -40,6 +48,8 @@ export default {
     return {
       address,
       loading: false,
+      modalStatus: false,
+      rmIndex: -1,
       formItem: {
         addressInfo: [],
         addressDetail: '',
@@ -49,7 +59,7 @@ export default {
       },
       ruleValidate: {
         addressInfo: [
-          { required: true, message: "请填写地址信息", trigger: 'blur' }
+          { type:'array', required: true, message: "请填写地址信息", trigger: 'change' }
         ],
         addressDetail: [
           { required: true, message: "请填写地址详情", trigger: 'blur' }
@@ -96,12 +106,46 @@ export default {
         {
           title: '操作',
           key: 'operate',
-          align: 'center'
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('a', {
+                on: {
+                  click: () => {
+                    this.rmIndex = params.index;
+                    this.modalStatus = true;
+                  }
+                }
+              }, '移除')
+            ])
+          }
         },
         {
           title: ' ',
           key: 'defaultAddress',
-          align: 'center'
+          align: 'center',
+          render: (h, params) => {
+            if (params.row.defaultAddress) {
+              return h('div', [
+                  h('p', {
+                    attrs: {
+                      style: "text-align:center; background-color: #FFE7BA; color: #FF8C00; border: 1px solid #FF8C00; padding: 2px; margin: 5px 0px;",
+                      min: 1
+                    }
+                }, '默认地址')
+              ])
+            } else {
+              return h('div', [
+                  h('a', {
+                  on: {
+                    click: () => {
+                      this.changeDefaultAddress(params.index);
+                    }
+                  }
+                }, '设为默认地址')
+              ])
+            }
+          }
         }
       ],
       addressTable: [
@@ -111,6 +155,7 @@ export default {
           addressDetail: '浙江省宁波市高新区江南路1689号浙江大学软件学院2#公寓',
           postcode: '000000',
           phone: '17826871231',
+          defaultAddress: true
         },
         {
           receiverName: '柴二凯',
@@ -118,6 +163,7 @@ export default {
           addressDetail: '上海市松江区叶榭镇济众路300号上海农友植物医院有限公司',
           postcode: '000000',
           phone: '17826871245',
+          defaultAddress: false
         },
         {
           receiverName: '柴三凯',
@@ -125,6 +171,7 @@ export default {
           addressDetail: '北京市海淀区双清路30号清华大学',
           postcode: '000000',
           phone: '17456871245',
+          defaultAddress: false
         },
       ]
     }
@@ -149,8 +196,58 @@ export default {
         } else {
           callback();
         }
+    },
+    handleSubmit(e) {
+      this.$refs[e].validate((valid) => {
+          if (valid) {
+            let address = '';
+            for (let i = 0; i < this.formItem.addressInfo.length; i++) {
+              address += this.formItem.addressInfo[i] + ' ';
+            }
+            var newAddressInfo = {
+              receiverName: this.formItem.receiverName,
+              addressInfo: address,
+              addressDetail: this.formItem.addressDetail,
+              postcode: this.formItem.postcode,
+              phone: this.formItem.phone,
+              defaultAddress: false
+            }
+            this.addressTable.push(newAddressInfo);
+            // 后端添加
+            this.$Message.success('新增成功！');
+          } else {
+            this.$Message.error('新增失败！');
+          }
+        });
+    },
+    remove(index) {
+      this.addressTable.splice(index, 1);
+      // 后端数据库删除请求
+    },
+    ok() {
+      if(this.rmIndex != -1) {
+        this.remove(this.rmIndex);
+        this.$Message.success('移除成功！');
+        this.rmIndex = -1;
+        // 后台数据更新
+      }
+    },
+    cancel() {
+      this.$Message.success('取消移除！');
+      this.rmIndex = -1;
+    },
+    changeDefaultAddress(index) {
+      for (let i = 0; i < this.addressTable.length; i++) {
+        if (i == index) {
+          this.addressTable[i].defaultAddress = true;
+        } else {
+          this.addressTable[i].defaultAddress = false;
+        }
+      }
+      // 后台数据库更新
     }
-  }
+  },
+
 }
 </script>
 

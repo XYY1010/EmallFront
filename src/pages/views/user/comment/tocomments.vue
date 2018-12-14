@@ -1,15 +1,15 @@
 <template>
     <div class="from-comments-div">
       <div class="inner-box">
-        <Table border :columns="columns" :data="tableData" :loading="loading" size="large" no-data-text="暂无评价信息，赶快去评价吧~"></Table>
-        <Page :total="dataCount" :page-size="pageSize" show-total class="paging float-right" @on-change="changepage"></Page>
+        <Table border :columns="columns" :data="historyData" :loading="loading" size="large" no-data-text="暂无评价信息，赶快去评价吧~"></Table>
+        <Page :total="dataCount" :page-size="pageSize" show-total class="paging" @on-change="changepage"></Page>
       </div>
     </div>
 </template>
 
 <script>
 export default {
-  name: 'tocomments',
+  name: 'fromcomments',
   data() {
     return {
       ajaxHistoryData:[],
@@ -17,6 +17,7 @@ export default {
       dataCount:0,
       // 每页显示多少条
       pageSize:10,
+      historyData: [],
       loading: false,
       tableData:[{
     			icon:"http://139.199.125.60/goodcomment.png",
@@ -57,7 +58,127 @@ export default {
     			goodsDetail: "男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
           goodsUrl: "/goodsdetail",
     			goodsPrize:"164.0"
-    		}
+    		},
+        {
+      			icon:"http://139.199.125.60/goodcomment.png",
+      			comment:"感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。🌹",
+      			date:"2018-10-02 19:39:10",
+      			seller:"momo沫沫银饰",
+      			sellerIcon:"/",
+      			goodsDetail:"男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+            goodsUrl: "/goodsdetail",
+      			goodsPrize:"164.0"
+      		},
+      		{
+      			icon:"http://139.199.125.60/middlecomment.png",
+      			comment:"感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。💗",
+      			date:"2018-10-02 19:39:10",
+      			seller:"momo沫沫银饰",
+      			sellerIcon:"/",
+      			goodsDetail:"男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+            goodsUrl: "/goodsdetail",
+      			goodsPrize:"164.0"
+      		},
+      		{
+      			icon:"http://139.199.125.60/middlecomment.png",
+      			comment:"感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。💗",
+      			date:"2018-10-02 19:39:10",
+      			seller:"momo沫沫银饰",
+      			sellerIcon:"/",
+      			goodsDetail:"男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+            goodsUrl: "/goodsdetail",
+      			goodsPrize:"164.0"
+      		},
+      		{
+      			icon: "http://139.199.125.60/badcomment.png",
+      			comment: "感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。💔",
+      			date: "2018-10-02 19:39:10",
+      			seller: "momo沫沫银饰",
+      			sellerIcon: "/",
+      			goodsDetail: "男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+            goodsUrl: "/goodsdetail",
+      			goodsPrize:"164.0"
+      		},
+          {
+        			icon:"http://139.199.125.60/goodcomment.png",
+        			comment:"感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。🌹",
+        			date:"2018-10-02 19:39:10",
+        			seller:"momo沫沫银饰",
+        			sellerIcon:"/",
+        			goodsDetail:"男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+              goodsUrl: "/goodsdetail",
+        			goodsPrize:"164.0"
+        		},
+        		{
+        			icon:"http://139.199.125.60/middlecomment.png",
+        			comment:"感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。💗",
+        			date:"2018-10-02 19:39:10",
+        			seller:"momo沫沫银饰",
+        			sellerIcon:"/",
+        			goodsDetail:"男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+              goodsUrl: "/goodsdetail",
+        			goodsPrize:"164.0"
+        		},
+        		{
+        			icon:"http://139.199.125.60/middlecomment.png",
+        			comment:"感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。💗",
+        			date:"2018-10-02 19:39:10",
+        			seller:"momo沫沫银饰",
+        			sellerIcon:"/",
+        			goodsDetail:"男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+              goodsUrl: "/goodsdetail",
+        			goodsPrize:"164.0"
+        		},
+        		{
+        			icon: "http://139.199.125.60/badcomment.png",
+        			comment: "感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。💔",
+        			date: "2018-10-02 19:39:10",
+        			seller: "momo沫沫银饰",
+        			sellerIcon: "/",
+        			goodsDetail: "男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+              goodsUrl: "/goodsdetail",
+        			goodsPrize:"164.0"
+        		},
+            {
+          			icon:"http://139.199.125.60/goodcomment.png",
+          			comment:"感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。🌹",
+          			date:"2018-10-02 19:39:10",
+          			seller:"momo沫沫银饰",
+          			sellerIcon:"/",
+          			goodsDetail:"男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+                goodsUrl: "/goodsdetail",
+          			goodsPrize:"164.0"
+          		},
+          		{
+          			icon:"http://139.199.125.60/middlecomment.png",
+          			comment:"感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。💗",
+          			date:"2018-10-02 19:39:10",
+          			seller:"momo沫沫银饰",
+          			sellerIcon:"/",
+          			goodsDetail:"男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+                goodsUrl: "/goodsdetail",
+          			goodsPrize:"164.0"
+          		},
+          		{
+          			icon:"http://139.199.125.60/middlecomment.png",
+          			comment:"感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。💗",
+          			date:"2018-10-02 19:39:10",
+          			seller:"momo沫沫银饰",
+          			sellerIcon:"/",
+          			goodsDetail:"男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+                goodsUrl: "/goodsdetail",
+          			goodsPrize:"164.0"
+          		},
+          		{
+          			icon: "http://139.199.125.60/badcomment.png",
+          			comment: "感谢亲的光临，亲的满意，就是我们最大的欣慰。最大的回报。小店会更加努力做好。💔",
+          			date: "2018-10-02 19:39:10",
+          			seller: "momo沫沫银饰",
+          			sellerIcon: "/",
+          			goodsDetail: "男士BB霜自然色遮瑕裸妆控油男士化妆品套装男初学者...",
+                goodsUrl: "/goodsdetail",
+          			goodsPrize:"164.0"
+          		}
     	],
       columns: [
         {
@@ -211,8 +332,6 @@ export default {
 
 <style scoped>
 .from-comments-div {
-  width: auto;
-  height: 700px;
   border: 1px solid #eeeeee;
   margin: 20px 50px;
 }
@@ -221,5 +340,6 @@ export default {
 }
 .paging{
   margin:10px 0px;
+  text-align: right;
 }
 </style>

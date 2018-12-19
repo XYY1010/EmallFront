@@ -3,8 +3,7 @@
     <Header/>
     <SearchBar/>
     <ClassifyNav/>
-    <Footer/>
-    <Copyright/>
+    <SimpleCopyright/>
   </div>
 </template>
 
@@ -14,6 +13,7 @@ import SearchBar from "../components/SearchBar.vue"
 import Footer from '../components/Footer.vue';
 import Copyright from '../components/Copyright.vue';
 import ClassifyNav from '../components/ClassifyNav.vue';
+import SimpleCopyright from '../components/SimpleCopyright.vue'
 export default {
   name: 'index',
   data() {
@@ -25,8 +25,7 @@ export default {
     Header,
     SearchBar,
     ClassifyNav,
-    Footer,
-    Copyright
+    SimpleCopyright
   }
 }
 </script>

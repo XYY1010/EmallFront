@@ -3,7 +3,7 @@
     <div class="item-detail-show">
       <div class="item-detail-left">
         <div class="item-detail-big-img">
-          <img :src="data.goodsImg[imgIndex]" alt="">
+          <my-magnify :url="data.goodsImg[imgIndex]" :scale="2"></my-magnify>
         </div>
         <div class="item-detail-img-row">
           <div class="item-detail-img-small" v-for="(item, index) in data.goodsImg" :key="index" @mouseover="showBigImg(index)">
@@ -97,8 +97,12 @@
 <script>
 // import store from '@/vuex/store';
 // import { mapState, mapActions } from 'vuex';
+import MyMagnify from "./MyMagnify.vue";
 export default {
   name: 'ShowGoods',
+  components: {
+    MyMagnify
+  },
   data () {
     return {
       price: 0,
@@ -224,7 +228,7 @@ export default {
       };
       this.addShoppingCart(data);
       this.$router.push('/shoppingCart');
-    }
+    },
   },
   mounted () {
     const father = this;
@@ -260,7 +264,7 @@ export default {
   box-shadow: 0px 0px 8px #ccc;
   cursor: pointer;
 }
-.item-detail-big-img img {
+.item-detail-big-img my-magnify {
   width: 100%;
 }
 .item-detail-img-row {

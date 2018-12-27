@@ -31,6 +31,7 @@
         },
         data () {
             return {
+                screenWidth:window.innerWidth,
                 id:null,
                 cover:null,
                 imgbox:null,
@@ -67,6 +68,9 @@
             this.bigOrginUrl=this.bigUrl
         },
         watch:{
+            screenWidth:function(val){
+                this.canvas.style.left=this.$parent.fun()+this.imgbox.offsetWidth+30+'px'
+            },
             url:function(val){
                 this.imgUrl=val
                 this.orginUrl=val
@@ -79,9 +83,16 @@
             }
         },
         mounted(){
+            const that = this
             this.$nextTick(()=>{
                 this.initTime()
-            })
+            }),
+            window.onresize =()=>{
+                return (()=>{
+                    window.screenWidth = window.innerWidth;
+                    this.screenWidth = window.screenWidth;
+                })()
+            }
         },
         methods: {
             initTime(){
@@ -118,7 +129,7 @@
                 this.canvas=document.createElement('canvas')
                 this.canvas.className='mouse-cover-canvas'
                 this.canvas.style.position='absolute'
-                this.canvas.style.left=this.imgbox.offsetLeft+this.imgbox.offsetWidth+230+'px'
+                this.canvas.style.left=this.$parent.fun()+this.imgbox.offsetWidth+30+'px'
                 this.canvas.style.top=this.imgbox.offsetTop + 43 +'px'
                 this.canvas.style.border='1px solid #eee'
                 this.canvas.style.zIndex='99999'

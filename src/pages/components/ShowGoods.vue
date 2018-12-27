@@ -3,7 +3,7 @@
     <div class="item-detail-show">
       <div class="item-detail-left">
         <div class="item-detail-big-img">
-          <my-magnify :url="data.goodsImg[imgIndex]" :scale="2"></my-magnify>
+          <my-magnify :url="data.goodsImg[imgIndex]" id="magnify_img" :scale="2"></my-magnify>
         </div>
         <div class="item-detail-img-row">
           <div class="item-detail-img-small" v-for="(item, index) in data.goodsImg" :key="index" @mouseover="showBigImg(index)">
@@ -208,6 +208,17 @@ export default {
     }
   },
   methods: {
+    fun:function(){
+      var o = document.getElementById("magnify_img");
+      var oLeft =o.offsetLeft ;
+      var oParent;
+      while(o.offsetParent!=null) {
+        oParent = o.offsetParent
+        oLeft += oParent.offsetLeft
+        o = oParent
+      }
+      return oLeft
+    },
     select (index1, index2) {
       this.selectBoxIndex = index1 * 3 + index2;
       this.price = this.data.setMeal[index1][index2].price;

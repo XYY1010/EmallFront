@@ -69,7 +69,7 @@ export default {
           console.log(this.form);
           this.$Message.success('登录成功！');
           this.$store.commit('initUser', {user: {
-              userId: '1',
+              userId: '42346568078196736',
               userName: this.form.user,
               password: this.form.password,
               phone: '17845897418',

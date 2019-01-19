@@ -15,7 +15,7 @@
         @on-cancel="cancel">
         <p>确定将该商品从购物车中移除吗？</p>
     </Modal>
-    <Table height="500" border ref="selection" :columns="columns" :data="shoppingCart" :loading="loading" size="large" @on-selection-change="select" no-data-text="您的购物车空空如也~ 请先添加商品到购物车再点击购买"></Table>
+    <Table border ref="selection" :columns="columns" :data="shoppingCart" :loading="loading" size="large" @on-selection-change="select" no-data-text="您的购物车空空如也~ 请先添加商品到购物车再点击购买"></Table>
     <div class="pay-container">
       <div class="pay-box">
         <p> <span>应付总金额</span> <span class="money"></span> <Icon type="logo-yen"></Icon> {{totalPrice.toFixed(2)}}</p>
@@ -41,6 +41,7 @@ export default {
       modelStatus: false,
       rmIndex: -1,
       goodsSelectList: [],
+      userInfo: {},
       columns: [
         {
           type: 'selection',
@@ -56,7 +57,7 @@ export default {
             return h('div', [
               h('img', {
                 attrs: {
-                  src: params.row.imgUrl,
+                  src: params.row.attrImg,
                   style: "width:50px; height:40px;"
                 }
               })
@@ -67,13 +68,13 @@ export default {
         {
           title: '商品信息',
           width: 350,
-          key: 'title',
+          key: 'itemTitle',
           align: 'center'
         },
         {
           title: '规格',
           width: 300,
-          key: 'requirement',
+          key: 'attrVals',
           align: 'center'
         },
         {
@@ -99,6 +100,7 @@ export default {
                     params.row.amount = event;
                     this.shoppingCart[params.index].amount = event;
                     // 后台数据更新
+                    this.updateAmount(this.shoppingCart[params.index].cartId, event);
                   }
                 }
               })
@@ -139,96 +141,7 @@ export default {
           }
         }
       ],
-      shoppingCart: [
-        {
-          goods_id: '13212313213',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/bxjg.jpg',
-          requirement: '白色 威震天',
-          price: (2800).toFixed(2),
-          title: '变形金刚领袖战争钢锁淤泥嚎叫飞镖铁渣组合机器恐龙男孩玩具'
-        },
-        {
-          goods_id: '13212123211',
-          amount: 10,
-          imgUrl: 'http://139.199.125.60/bijiben13.3.jpg',
-          requirement: '银色 13.3寸 i5',
-          price: (5500.00).toFixed(2),
-          title: '小米笔记本'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: (2200).toFixed(2),
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: (2200).toFixed(2),
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: (2200).toFixed(2),
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: (2200).toFixed(2),
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: (2200).toFixed(2),
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: (2200).toFixed(2),
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: (2200).toFixed(2),
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: (2200).toFixed(2),
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: (2200).toFixed(2),
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        }
-      ]
+      shoppingCart: []
     }
   },
   components: {
@@ -263,21 +176,90 @@ export default {
     },
     ok() {
       if(this.rmIndex != -1) {
-        this.remove(this.rmIndex);
-        this.$Message.success('移除成功！');
-        this.rmIndex = -1;
         // 后台数据更新
+        this.$axios({
+          method: 'post',
+          url: '/shoppingcart/delete',
+          params: {
+            id: this.shoppingCart[this.rmIndex].cartId
+          }
+        }).then(res => {
+          let result = res.data;
+          if (result.status == 'success') {
+            this.remove(this.rmIndex);
+            this.$Message.success('移除成功！');
+            this.rmIndex = -1;
+          } else {
+            this.$Notice.open({
+              title: "错误" + this.result.data.errCode,
+              desc: this.result.data.errMsg
+            });
+          }
+        }).catch(err => {
+          this.$Notice.open({
+            title: "错误",
+            desc: "服务器开小差了,请稍后再试"
+          });
+        });
       }
     },
     cancel() {
       this.$Message.success('取消移除！');
       this.rmIndex = -1;
+    },
+    updateAmount(cartId, amount) {
+      this.$axios({
+        method: 'post',
+        url: '/shoppingcart/modifyamount',
+        params: {
+          id: cartId,
+          amount: amount
+        }
+      }).then(res => {
+        let result = res.data;
+        if (result.status == 'success') {
+          this.$Message.success('数量修改成功！');
+        } else {
+          this.$Notice.open({
+            title: "错误" + this.result.data.errCode,
+            desc: this.result.data.errMsg
+          });
+        }
+      }).catch(err => {
+        this.$Notice.open({
+          title: "错误",
+          desc: "服务器开小差了,请稍后再试"
+        });
+      });
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.$refs.selection.selectAll(true)
-    }, 500);
+    this.userInfo = this.$store.getters.user;
+    this.$axios({
+      method: 'post',
+      url: '/shoppingcart/getall',
+      params: {
+        id: this.userInfo.userId
+      }
+    }).then(res => {
+      let result = res.data;
+      if (result.status == 'success') {
+        this.shoppingCart = result.data;
+        for (var i = 0; i < this.shoppingCart.length; i++) {
+          this.shoppingCart[i].price = this.shoppingCart[i].price.toFixed(2);
+        }
+      } else {
+        this.$Notice.open({
+          title: "错误" + this.result.data.errCode,
+          desc: this.result.data.errMsg
+        });
+      }
+    }).catch(err => {
+      this.$Notice.open({
+        title: "错误",
+        desc: "服务器开小差了,请稍后再试"
+      });
+    });
   }
 }
 </script>

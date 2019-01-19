@@ -46,18 +46,19 @@
               <div class="shopping-cart-list" v-show="shoppingCart.length > 0">
                 <div v-for="(item, index) in shoppingCart" :key="index" class="shopping-cart-box" >
                   <div class="shopping-cart-img">
-                    <img :src="item.imgUrl">
+                    <img :src="item.attrImg">
                   </div>
                   <div class="shopping-cart-info">
                     <div class="shopping-cart-title">
-                      <p v-if="item.title.length>13"><font style="color:black; weight:bolder;"size="2">{{item.title.substring(0, 12)}}...</font></p>
-                      <p v-if="item.title.length<=13"><font style="color:black; weight:bolder;"size="2">{{item.title}}</font></p>
+                      <p v-if="item.itemTitle.length>15"><font style="color:black; weight:bolder;"size="2">{{item.itemTitle.substring(0, 14)}}...</font></p>
+                      <p v-if="item.itemTitle.length<=15"><font style="color:black; weight:bolder;"size="2">{{item.itemTitle}}</font></p>
                     </div>
                     <div class="shopping-cart-detail">
                       <p>
                         规格：
                         <span class="shopping-cart-text">
-                          <font style="color:blue;">{{item.requirement}}</font>
+                          <font v-if="item.attrVals.length<=15" style="color:blue;">{{item.attrVals}}</font>
+                          <font v-if="item.attrVals.length>15" style="color:blue;">{{item.attrVals.substring(0, 14)}}...</font>
                         </span>
                       </p>
                       <p>
@@ -95,30 +96,6 @@ export default {
   data() {
     return {
       shoppingCart: [
-        {
-          goods_id: '13212313213',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/bxjg.jpg',
-          requirement: '白色 威震天',
-          price: 2800.00,
-          title: '变形金刚领袖战争钢锁淤泥嚎叫飞镖铁渣组合机器恐龙男孩玩具'
-        },
-        {
-          goods_id: '13212123211',
-          amount: 10,
-          imgUrl: 'http://139.199.125.60/bijiben13.3.jpg',
-          requirement: '银色 13.3寸 i5',
-          price: 5500.00,
-          title: '小米笔记本'
-        },
-        {
-          goods_id: '13211223658',
-          amount: 1,
-          imgUrl: 'http://139.199.125.60/xmds4a_43.png',
-          requirement: '黑色 43寸 xmtv4a',
-          price: 2200.00,
-          title: 'Xiaomi/小米 小米电视4A 43英寸4S PRO智能网络4K超清液晶电视机'
-        }
       ],
       userInfo: {}
     }
@@ -140,11 +117,40 @@ export default {
       this.$router.push('/');
     },
     toShoppingcart() {
-      this.$router.push('/shoppingcart');
+      if (this.userInfo == null) {
+        this.$router.push('/login');
+      } else {
+        this.$router.push('/shoppingcart');
+      }
     }
   },
   mounted() {
     this.userInfo = this.$store.getters.user;
+    this.$axios({
+      method: 'post',
+      url: '/shoppingcart/getall',
+      params: {
+        id: this.userInfo.userId
+      }
+    }).then(res => {
+      let result = res.data;
+      if (result.status == 'success') {
+        this.shoppingCart = result.data;
+        for (var i = 0; i < this.shoppingCart.length; i++) {
+          this.shoppingCart[i].price = this.shoppingCart[i].price.toFixed(2);
+        }
+      } else {
+        this.$Notice.open({
+          title: "错误" + this.result.data.errCode,
+          desc: this.result.data.errMsg
+        });
+      }
+    }).catch(err => {
+      this.$Notice.open({
+        title: "错误",
+        desc: "服务器开小差了,请稍后再试"
+      });
+    });
   }
 }
 </script>
@@ -206,7 +212,7 @@ export default {
       width: 120px;
     }
     .shopping-cart-list {
-      padding: 3px 15px;
+      padding: 0px 15px;
       height:150px;
       overflow: auto;
     }

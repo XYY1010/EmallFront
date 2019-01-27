@@ -3,6 +3,10 @@
     <Header/>
     <SearchBar/>
     <ClassifyNav/>
+    <Phone/>
+    <Accessories/>
+    <Appliance/>
+    <Hardware/>
     <SimpleCopyright/>
   </div>
 </template>
@@ -13,7 +17,11 @@ import SearchBar from "../components/SearchBar.vue"
 import Footer from '../components/Footer.vue';
 import Copyright from '../components/Copyright.vue';
 import ClassifyNav from '../components/ClassifyNav.vue';
-import SimpleCopyright from '../components/SimpleCopyright.vue'
+import Phone from '../components/indexpage/Phone.vue';
+import Accessories from '../components/indexpage/Accessories.vue';
+import Appliance from '../components/indexpage/Appliance.vue';
+import Hardware from '../components/indexpage/Hardware.vue';
+import SimpleCopyright from '../components/SimpleCopyright.vue';
 export default {
   name: 'index',
   data() {
@@ -25,6 +33,10 @@ export default {
     Header,
     SearchBar,
     ClassifyNav,
+    Phone,
+    Accessories,
+    Appliance,
+    Hardware,
     SimpleCopyright
   }
 }

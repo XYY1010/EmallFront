@@ -7,6 +7,7 @@
     <Accessories/>
     <Appliance/>
     <Hardware/>
+    <Recommend/>
     <SimpleCopyright/>
   </div>
 </template>
@@ -21,6 +22,7 @@ import Phone from '../components/indexpage/Phone.vue';
 import Accessories from '../components/indexpage/Accessories.vue';
 import Appliance from '../components/indexpage/Appliance.vue';
 import Hardware from '../components/indexpage/Hardware.vue';
+import Recommend from '../components/indexpage/Recommend.vue'
 import SimpleCopyright from '../components/SimpleCopyright.vue';
 export default {
   name: 'index',
@@ -37,6 +39,7 @@ export default {
     Accessories,
     Appliance,
     Hardware,
+    Recommend,
     SimpleCopyright
   }
 }

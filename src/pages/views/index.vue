@@ -1,5 +1,6 @@
 <template>
   <div>
+    <BackTop></BackTop>
     <Header/>
     <SearchBar/>
     <ClassifyNav/>

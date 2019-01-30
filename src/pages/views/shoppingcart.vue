@@ -1,5 +1,6 @@
 <template>
   <div>
+    <BackTop></BackTop>
     <HeaderNav/>
     <ShoppingCartSearch/>
   <div class="shopping-cart-div">

@@ -62,16 +62,12 @@ export default {
     slideNext() {
       if (this.currPage < Math.floor((this.recommends.length - 1) / 5)) {
         this.currPage++;
-        // $('.recommend-content').css('margin-left', this.currPage * (-1224) + 'px');
-        // this.$refs.contentDiv.css('margin-left', this.currPage * (-1224) + 'px');
         this.$refs.contentDiv.style.marginLeft = this.currPage * (-1224) + 'px';
       }
     },
     slidePre() {
       if (this.currPage !== 0) {
         this.currPage--;
-        // $('.recommend-content').css('margin-left', this.currPage * (-1224) + 'px');
-        // this.$refs.contentDiv.css('margin-left', this.currPage * (-1224) + 'px');
         this.$refs.contentDiv.style.marginLeft = this.currPage * (-1224) + 'px';
       }
     }
@@ -129,7 +125,7 @@ export default {
 .recommend-content {
   width: auto;
   height: 300px;
-  transition: all 0.3s;
+  transition: all 0.5s;
 }
 .recommend-content .recommend-item {
   float: left;
@@ -140,7 +136,7 @@ export default {
   font-size: 14px;
   background: #fff;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.5s;
 }
 .recommend-content .recommend-item:hover {
   transform: translateY(-3px);
@@ -160,6 +156,9 @@ export default {
   font-size: 14px;
   text-align: center;
   color: #333;
+}
+.recommend-content .recommend-item a {
+  text-decoration: none;
 }
 .recommend-content .recommend-item .item-price {
   margin-bottom: 10px;

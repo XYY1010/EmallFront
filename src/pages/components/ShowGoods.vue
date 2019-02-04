@@ -177,6 +177,7 @@ export default {
       }
     }
   },
+  props:['itemId'],
   computed: {
     hirePurchase () {
       const three = this.price * this.count / 3;
@@ -239,7 +240,7 @@ export default {
       };
       this.addShoppingCart(data);
       this.$router.push('/shoppingCart');
-    },
+    }
   },
   mounted () {
     const father = this;

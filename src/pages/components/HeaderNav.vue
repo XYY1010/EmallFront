@@ -126,31 +126,31 @@ export default {
   },
   mounted() {
     this.userInfo = this.$store.getters.user;
-    this.$axios({
-      method: 'post',
-      url: '/shoppingcart/getall',
-      params: {
-        id: this.userInfo.userId
-      }
-    }).then(res => {
-      let result = res.data;
-      if (result.status == 'success') {
-        this.shoppingCart = result.data;
-        for (var i = 0; i < this.shoppingCart.length; i++) {
-          this.shoppingCart[i].price = this.shoppingCart[i].price.toFixed(2);
-        }
-      } else {
-        this.$Notice.open({
-          title: "错误" + this.result.data.errCode,
-          desc: this.result.data.errMsg
-        });
-      }
-    }).catch(err => {
-      this.$Notice.open({
-        title: "错误",
-        desc: "服务器开小差了,请稍后再试"
-      });
-    });
+    // this.$axios({
+    //   method: 'post',
+    //   url: '/shoppingcart/getall',
+    //   params: {
+    //     id: this.userInfo.userId
+    //   }
+    // }).then(res => {
+    //   let result = res.data;
+    //   if (result.status == 'success') {
+    //     this.shoppingCart = result.data;
+    //     for (var i = 0; i < this.shoppingCart.length; i++) {
+    //       this.shoppingCart[i].price = this.shoppingCart[i].price.toFixed(2);
+    //     }
+    //   } else {
+    //     this.$Notice.open({
+    //       title: "错误" + this.result.data.errCode,
+    //       desc: this.result.data.errMsg
+    //     });
+    //   }
+    // }).catch(err => {
+    //   this.$Notice.open({
+    //     title: "错误",
+    //     desc: "服务器开小差了,请稍后再试"
+    //   });
+    // });
   }
 }
 </script>

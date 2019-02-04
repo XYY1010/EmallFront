@@ -9,29 +9,6 @@
       <GoodsClassNav></GoodsClassNav>
       <!-- 商品展示容器 -->
       <div class="goods-box">
-        <!-- <div class="as-box">
-          <div class="item-as-title">
-            <span>商品精选</span>
-            <span>广告</span>
-          </div>
-          <div class="item-as" v-for="(item,index) in asItems" :key="index">
-            <div class="item-as-img">
-              <img :src="item.img" alt="">
-            </div>
-            <div class="item-as-price">
-              <span>
-                <Icon type="social-yen text-danger"></Icon>
-                <span class="seckill-price text-danger">{{item.price}}</span>
-              </span>
-            </div>
-            <div class="item-as-intro">
-              <span>{{item.intro}}</span>
-            </div>
-            <div class="item-as-selled">
-              已有<span>{{item.num}}</span>人评价
-            </div>
-          </div>
-        </div> -->
         <div class="goods-list-box">
           <div class="goods-list-tool">
             <ul>
@@ -40,8 +17,8 @@
           </div>
           <div class="goods-list">
             <div class="goods-show-info" v-for="(item, index) in goodsList" :key="index">
-              <div class="goods-show-img">
-                <router-link to="/goodsDetail"><img :src="item.img"/></router-link>
+              <div class="">
+                <router-link to="/goodsDetail"><img :src="item.img" @click="handlerClickImg(index)" class="goods-show-img" /></router-link>
               </div>
               <div class="goods-show-price">
                 <span>
@@ -55,15 +32,17 @@
               <div class="goods-show-num">
                 已有<span>{{item.remarks}}</span>人评价
               </div>
-              <div class="goods-show-seller">
+              <!-- <div class="goods-show-seller">
                 <span>{{item.shopName}}</span>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
       </div>
       <div class="goods-page">
-        <Page :total="100" show-sizer></Page>
+        <Page :total="totalItem" :current="pageNum" :page-size="pageSize"
+        @on-change="handlePage" 
+        @on-page-size-change="handlePageSize" show-sizer></Page>
       </div>
     </div>
     <!-- <Footer></Footer> -->
@@ -84,6 +63,9 @@ export default {
   },
   data () {
     return {
+      totalItem:150,
+      pageNum:1,
+      pageSize:10,//默认每页显示个数是10个
       sreachItem: '',
       isAction: [ true, false, false ],
       icon: [ 'arrow-up-a', 'arrow-down-a', 'arrow-down-a' ],
@@ -92,152 +74,81 @@ export default {
         {title: '评论数', en: 'remarks'},
         {title: '价格', en: 'price'}
       ],
-        goodsList: [
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-1.jpg',
-            price: 36.60,
-            intro: 'SKSK 苹果7/7plus手机壳 iPhone 7 Plus保护套全包硬壳男女磨砂防摔 火影红(苹',
-            remarks: 6160,
-            shopName: '元亨利配件专营店',
-            sale: 9900
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-2.jpg',
-            price: 28.00,
-            intro: '蒙奇奇 苹果6s手机壳磨砂防摔保护套 适用于iphone6/6s/6sPlus/6plus 6/6s 4.7英',
-            remarks: 3000,
-            shopName: 'monqiqi旗舰店',
-            sale: 9600
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-3.jpg',
-            price: 15.00,
-            intro: 'BIAZE 苹果6/6s手机壳 苹果iphone6s 4.7英寸透明手机套 清爽系列',
-            remarks: 2800,
-            shopName: 'BIAZE官方旗舰店',
-            sale: 8900
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-4.jpg',
-            price: 29.90,
-            intro: '慕臣 苹果6s手机壳全包防摔磨砂软保护套男女 适用于iPhone6splus',
-            remarks: 9000,
-            shopName: '歌乐力手配专营店',
-            sale: 8600
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-5.jpg',
-            price: 15.00,
-            intro: 'BIAZE 苹果6/6s手机壳 苹果iphone6s 4.7英寸透明手机套 清爽系列',
-            remarks: 6160,
-            shopName: 'BIAZE官方旗舰店',
-            sale: 8560
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-6.jpg',
-            price: 28.00,
-            intro: '慕臣 苹果6s手机壳全包防摔磨砂软保护套男女 适用于iPhone6splus',
-            remarks: 9006,
-            shopName: '歌乐力手配专营店',
-            sale: 8530
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-7.jpg',
-            price: 15.00,
-            intro: 'BIAZE 苹果6/6s手机壳 苹果iphone6s 4.7英寸透明手机套 清爽系列',
-            remarks: 8666,
-            shopName: 'BIAZE官方旗舰店',
-            sale: 8360
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-8.jpg',
-            price: 29.90,
-            intro: '慕臣 苹果6s手机壳全包防摔磨砂软保护套男女 适用于iPhone6splus',
-            remarks: 6080,
-            shopName: '歌乐力手配专营店',
-            sale: 7560
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-1.jpg',
-            price: 36.60,
-            intro: 'SKSK 苹果7/7plus手机壳 iPhone 7 Plus保护套全包硬壳男女磨砂防摔 火影红(苹',
-            remarks: 6160,
-            shopName: '元亨利配件专营店',
-            sale: 7360
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-2.jpg',
-            price: 28.00,
-            intro: '蒙奇奇 苹果6s手机壳磨砂防摔保护套 适用于iphone6/6s/6sPlus/6plus 6/6s 4.7英',
-            remarks: 3000,
-            shopName: 'monqiqi旗舰店',
-            sale: 6960
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-3.jpg',
-            price: 15.00,
-            intro: 'BIAZE 苹果6/6s手机壳 苹果iphone6s 4.7英寸透明手机套 清爽系列',
-            remarks: 2800,
-            shopName: 'BIAZE官方旗舰店',
-            sale: 6560
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-4.jpg',
-            price: 29.90,
-            intro: '慕臣 苹果6s手机壳全包防摔磨砂软保护套男女 适用于iPhone6splus',
-            remarks: 9000,
-            shopName: '歌乐力手配专营店',
-            sale: 6360
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-5.jpg',
-            price: 15.00,
-            intro: 'BIAZE 苹果6/6s手机壳 苹果iphone6s 4.7英寸透明手机套 清爽系列',
-            remarks: 6160,
-            shopName: 'BIAZE官方旗舰店',
-            sale: 5530
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-6.jpg',
-            price: 28.00,
-            intro: '慕臣 苹果6s手机壳全包防摔磨砂软保护套男女 适用于iPhone6splus',
-            remarks: 9006,
-            shopName: '歌乐力手配专营店',
-            sale: 5560
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-7.jpg',
-            price: 15.00,
-            intro: 'BIAZE 苹果6/6s手机壳 苹果iphone6s 4.7英寸透明手机套 清爽系列',
-            remarks: 8666,
-            shopName: 'BIAZE官方旗舰店',
-            sale: 5260
-          },
-          {
-            img: 'http://139.199.125.60/goodsList/item-show-8.jpg',
-            price: 29.90,
-            intro: '慕臣 苹果6s手机壳全包防摔磨砂软保护套男女 适用于iPhone6splus',
-            remarks: 6080,
-            shopName: '歌乐力手配专营店',
-            sale: 3560
-          }
-        ]
+        goodsList: []
     };
   },
   computed: {
   },
   methods: {
     orderBy (data, index) {
-      console.log(data);
       this.icon = [ 'arrow-down-a', 'arrow-down-a', 'arrow-down-a' ];
       this.isAction = [ false, false, false ];
       this.isAction[index] = true;
       this.icon[index] = 'arrow-up-a';
-      this.SET_GOODS_ORDER_BY(data);
+      if(index==0){
+        alert(1);
+        this.getItems(pageNum,pageSize);
+      }else if(index==1){
+        this.sortByKey(this.goodsList,'remarks');
+         alert(2);
+      }else{
+        this.sortByKey(this.goodsList,'price');
+         alert(3);
+      }
+    },
+    getItems(currPage,pageSize){
+      this.$axios({
+        method:'get',
+        url:'/item/getItems',
+        params:{
+          currPage:currPage,
+          pageSize:pageSize
+        }
+      }).then(res=>{
+        this.goodsList = res.data.data;
+      }).catch(error=>{
+        this.$Notice.open({
+        title: "错误",
+        desc: "服务器开小差了,请稍后再试"
+      });
+      });
+    },
+    getItemCount(){
+      this.$axios({
+        method:'get',
+        url:'/item/getItemCount'
+      }).then(res=>{
+        this.totalItem = res.data.data;
+      }).catch(error=>{
+        this.$Notice.open({
+        title: "错误",
+        desc: "服务器开小差了,请稍后再试"
+      });
+      });
+    },
+    handlePage(value){
+      this.pageNum = value;
+      this.getItems(this.pageNum,this.pageSize);
+    },
+    handlePageSize(value){
+      this.pageSize = value;
+    },
+    sortByKey(array,key){
+      return array.sort(function(a,b){
+        var x = a[key];
+        var y = b[key];
+        return((x<y)?-1:((x>y)?1:0));
+      })
+    },
+    handlerClickImg(index){
+      alert(index);
+      alert(this.goodsList[0][index]);
     }
   },
   mounted () {
     this.sreachItem = this.$route.query.sreachData;
+    this.getItems(this.pageNum,this.pageSize);
+    this.getItemCount();
   },
   components: {
     Header,
@@ -384,6 +295,10 @@ export default {
 .goods-show-seller{
   font-size: 12px;
   color:#E4393C;
+}
+.goods-show-img{
+  width: 100%;
+  height: 100%;
 }
 .goods-page {
   margin-top: 20px;

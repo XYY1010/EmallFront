@@ -1,5 +1,5 @@
 <template>
-	<div class="goods-detail-div">
+	<div @listen='listenMsg' class="goods-detail-div">
 		<Header/>
 		<ShowGoods/>
 		<ShowGoodsDetail/>
@@ -15,7 +15,7 @@
 		name:'goodsdetail',
 		data:function(){
 			return {
-
+				itemId:''
 			}
 		},
 		components:{
@@ -23,6 +23,12 @@
 			ShowGoods,
 			ShowGoodsDetail,
 			SimpleCopyright
+		},
+		methods:{
+			listenMsg(data){
+				this.itemId = data;
+				alert(itemId);
+			}
 		}
 	}
 </script>

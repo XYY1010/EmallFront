@@ -30,7 +30,7 @@
                 <span>{{item.intro}}</span>
               </div>
               <div class="goods-show-num">
-                已有<span>{{item.remarks}}</span>人评价
+                已售出<span>{{item.itemSales}}</span>件
               </div>
               <!-- <div class="goods-show-seller">
                 <span>{{item.shopName}}</span>
@@ -54,7 +54,8 @@
 import Header from '../components/HeaderNav.vue';
 import SearchBar from "../components/SearchBar.vue"
 import GoodsClassNav from '../components/GoodsClassNav.vue';
-import SimpleCopyright from '../components/SimpleCopyright.vue'
+import SimpleCopyright from '../components/SimpleCopyright.vue';
+import itemMessage from '../../vuex/item.js'
 export default {
   name: 'goodslist',
   beforeRouteEnter (to, from, next) {
@@ -86,14 +87,14 @@ export default {
       this.isAction[index] = true;
       this.icon[index] = 'arrow-up-a';
       if(index==0){
-        alert(1);
+        //alert(1);
         this.getItems(pageNum,pageSize);
       }else if(index==1){
         this.sortByKey(this.goodsList,'remarks');
-         alert(2);
+         //alert(2);
       }else{
         this.sortByKey(this.goodsList,'price');
-         alert(3);
+         //alert(3);
       }
     },
     getItems(currPage,pageSize){
@@ -141,8 +142,7 @@ export default {
       })
     },
     handlerClickImg(index){
-      alert(index);
-      alert(this.goodsList[0][index]);
+      itemMessage.commit('setItemId',{itemId:this.goodsList[index].itemId});
     }
   },
   mounted () {
@@ -301,7 +301,6 @@ export default {
   height: 100%;
 }
 .goods-page {
-  margin-top: 20px;
   display: flex;
   justify-content: flex-end;
 }

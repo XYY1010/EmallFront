@@ -14,7 +14,7 @@
       <div class="item-detail-right">
         <div class="item-detail-title">
           <p>
-            <span class="item-detail-express">校园配送</span> {{data.title}}</p>
+            <span class="item-detail-express">校园配送</span> {{data.itemTitle}}</p>
         </div>
         <div class="item-detail-tag">
           <p>
@@ -44,9 +44,9 @@
           </div>
           <div class="item-price-right">
             <div class="item-remarks-sum">
-              <p>累计评价</p>
+              <p>累计销量</p>
               <p>
-                <span class="item-remarks-num">{{data.remarksNum}} 条</span>
+                <span class="item-remarks-num">{{data.itemSales}} 件</span>
               </p>
             </div>
           </div>
@@ -69,24 +69,12 @@
             </div>
           </div>
         </div>
-        <!-- 白条分期 -->
-        <div class="item-select">
-          <div class="item-select-title">
-            <p>白条分期</p>
-          </div>
-          <div class="item-select-row">
-            <div class="item-select-class" v-for="(item,index) in hirePurchase" :key="index">
-              <Tooltip :content="item.tooltip" placement="top-start">
-                <span>{{item.type}}</span>
-              </Tooltip>
-            </div>
-          </div>
-        </div>
         <br>
         <div class="add-buy-car-box">
           <div class="add-buy-car">
             <InputNumber :min="1" v-model="count" size="large"></InputNumber>
             <Button type="error" size="large" @click="addShoppingCartBtn()">加入购物车</Button>
+            <Button type="error" size="large" @click="addShoppingCartBtn()">立即购买</Button>
           </div>
         </div>
       </div>
@@ -98,6 +86,7 @@
 // import store from '@/vuex/store';
 // import { mapState, mapActions } from 'vuex';
 import MyMagnify from "./MyMagnify.vue";
+import itemMessage from '../../vuex/item.js';
 export default {
   name: 'ShowGoods',
   components: {
@@ -105,108 +94,24 @@ export default {
   },
   data () {
     return {
+      itemId:'',
       price: 0,
       count: 1,
       selectBoxIndex: 0,
       imgIndex: 0,
       data:{
         goodsImg: [
-          'http://139.199.125.60/goodsDetail/item-detail-1.jpg',
-          'http://139.199.125.60/goodsDetail/item-detail-2.jpg',
-          'http://139.199.125.60/goodsDetail/item-detail-3.jpg',
-          'http://139.199.125.60/goodsDetail/item-detail-4.jpg'
         ],
-        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
+        itemTitle: '1234',
         tags: ['满69-20元', '关注产品★送钢化膜', 'BIT配次日达'],
         discount: ['满148减10', '满218减20', '满288减30'],
         promotion: ['跨店满减', '多买优惠'],
-        remarksNum: 6000,
-        setMeal: [
-          [
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/1.jpg',
-              intro: '4.7英寸-深邃蓝',
-              price: 28.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/2.jpg',
-              intro: '4.7英寸-星空黑',
-              price: 29.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/3.jpg',
-              intro: '5.5英寸-香槟金',
-              price: 28.5
-            }
-          ],
-          [
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/4.jpg',
-              intro: '5.5英寸-玫瑰金',
-              price: 32.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/5.jpg',
-              intro: '5.5英寸-深邃蓝',
-              price: 32.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/6.jpg',
-              intro: '5.5英寸-星空黑',
-              price: 35.0
-            }
-          ],
-          [
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/7.jpg',
-              intro: '4.7英寸-香槟金',
-              price: 26.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/8.jpg',
-              intro: '4.7英寸-玫瑰金',
-              price: 25.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/9.jpg',
-              intro: '4.7英寸-中国红',
-              price: 28.0
-            }
-          ]
-        ]
+        itemSales:'',
+        setMeal: []
       }
     }
   },
-  props:['itemId'],
   computed: {
-    hirePurchase () {
-      const three = this.price * this.count / 3;
-      const sex = this.price * this.count / 6;
-      const twelve = this.price * this.count / 12 * 1.0025;
-      const twentyFour = this.price * this.count / 24 * 1.005;
-      return [
-        {
-          tooltip: '无手续费',
-          type: '不分期'
-        },
-        {
-          tooltip: '无手续费',
-          type: `￥${three.toFixed(2)} x 3期`
-        },
-        {
-          tooltip: '无手续费',
-          type: `￥${sex.toFixed(2)} x 6期`
-        },
-        {
-          tooltip: '含手续费：费率0.25%起，￥0.1起×12期',
-          type: `￥${twelve.toFixed(2)} x 12期`
-        },
-        {
-          tooltip: '含手续费：费率0.5%起，￥0.1起×12期',
-          type: `￥${twentyFour.toFixed(2)} x 24期`
-        }
-      ];
-    }
   },
   methods: {
     fun:function(){
@@ -234,19 +139,39 @@ export default {
       const goodsId = date.getTime();
       const data = {
         goods_id: goodsId,
-        title: this.data.title,
+        itemTitle: this.data.itemTitle,
         count: this.count,
         package: this.data.setMeal[index1][index2]
       };
       this.addShoppingCart(data);
       this.$router.push('/shoppingCart');
+    },
+    getItemDetail(itemId){
+      this.$axios({
+        method:'get',
+        url:'/item/getItemDetail',
+        params:{
+          itemId:itemId
+        }
+      }).then(res=>{
+        const data = res.data.data;
+        this.data.itemTitle = data.itemTitle;  
+        this.data.itemSales = data.itemSales;
+        var str = data.itemDetailImage;
+        str = str.replace(/[\'\"\\\b\f\n\r\t]/g, '');
+        this.data.goodsImg = str.split(",");
+      }).catch(error=>{
+        this.$Notice.open({
+          title:"错误",
+          desc:"服务器开小差了，请待会儿再试"
+        });
+      });
     }
   },
   mounted () {
-    const father = this;
-    setTimeout(() => {
-      father.price = father.data.setMeal[0][0].price || 0;
-    }, 300);
+    console.log(itemMessage.state);
+    this.itemId = itemMessage.state.itemId;
+    this.getItemDetail(this.itemId);
   }
 };
 </script>

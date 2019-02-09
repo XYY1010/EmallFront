@@ -142,7 +142,8 @@ export default {
       })
     },
     handlerClickImg(index){
-      itemMessage.commit('setItemId',{itemId:this.goodsList[index].itemId});
+      itemMessage.commit('setItemId',this.goodsList[index].itemId);
+      itemMessage.commit('setPrice',this.goodsList[index].price);
     }
   },
   mounted () {

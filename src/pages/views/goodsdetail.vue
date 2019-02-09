@@ -1,5 +1,5 @@
 <template>
-	<div @listen='listenMsg' class="goods-detail-div">
+	<div class="goods-detail-div">
 		<Header/>
 		<ShowGoods/>
 		<ShowGoodsDetail/>

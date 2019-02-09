@@ -14,7 +14,7 @@
             },
             url:{
                 type:String,
-                required:true
+                required:false
             },
             bigUrl:{
                 type:String,

@@ -13,7 +13,7 @@
             <div class="item-recommend-intro">
               <span>
                 <span class="item-recommend-top-num">{{index + 1}}</span> 热销{{item.sale}}件</span>
-              <span class="item-recommend-price">￥{{item.price.toFixed(2)}}</span>
+              <span class="item-recommend-price">￥{{item.prize.toFixed(2)}}</span>
             </div>
           </div>
         </div>
@@ -95,50 +95,16 @@
 
 <script>
 import ShowProductWarranty from './ShowProductWarranty.vue';
+import itemMessage from '../../vuex/item.js';
 export default {
   name: 'ShowGoodsDetail',
   data () {
     return {
+      HotItemNumber:4,
       tagsColor: [ 'blue', 'green', 'red', 'yellow' ],
       data:{
-        hot: [
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/1.jpg',
-            price: 28.0,
-            sale: 165076
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/2.jpg',
-            price: 36.0,
-            sale: 135078
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/3.jpg',
-            price: 38.0,
-            sale: 105073
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/4.jpg',
-            price: 39.0,
-            sale: 95079
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/5.jpg',
-            price: 25.0,
-            sale: 5077
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/6.jpg',
-            price: 20.0,
-            sale: 3077
-          }
-        ],
-        goodsDetail: [
-          'http://139.199.125.60/goodsDetail/intro/1.jpg',
-          'http://139.199.125.60/goodsDetail/intro/2.jpg',
-          'http://139.199.125.60/goodsDetail/intro/3.jpg',
-          'http://139.199.125.60/goodsDetail/intro/4.jpg'
-        ],
+        hot: [],
+        goodsDetail: [],
         param: [
           {
             title: '商品名称',
@@ -228,13 +194,52 @@ export default {
         }
       }
     };
+  }, 
+  mounted(){
+    this.getHotItems(this.HotItemNumber);
+    this.getIntroImg(itemMessage.state.itemId);
   },
   methods: {
     changeHeight () {
       let heightCss = window.getComputedStyle(this.$refs.itemIntroGoods).height;
-      console.log(heightCss);
       heightCss = parseInt(heightCss.substr(0, heightCss.length - 2)) + 89;
       this.$refs.itemIntroDetail.style.height = heightCss + 'px';
+    },
+    stringHandler(str){
+      str = str.replace(/[\'\"\\\b\f\n\r\t]/g, '');
+      return str.split(",");
+    },
+    getHotItems(number){
+      this.$axios({
+        method:'get',
+        url:'/item/getHotItems',
+        params:{
+          number:number
+        }
+      }).then(res=>{
+        this.data.hot = res.data.data;
+      }).catch(error=>{
+        this.$Notice.open({
+          title:"错误",
+          desc:"服务器开小差了，请待会儿再试"
+        });
+      });
+    },
+    getIntroImg(itemId){
+      this.$axios({
+        method:'get',
+        url:'/item/getIntroImg',
+        params:{
+          itemId:itemId
+        }
+      }).then(res=>{
+        this.data.goodsDetail = this.stringHandler(res.data.data);
+      }).catch(error=>{
+        this.$Notice.open({
+          title:"错误",
+          desc:"服务器开小差了，请待会儿再试"
+        });
+      });
     }
   },
   updated () {

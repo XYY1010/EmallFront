@@ -51,9 +51,25 @@
             </div>
           </div>
         </div>
-        <!-- 选择颜色 -->
-        <div class="item-select">
-          <div class="item-select-title">
+          <div class="item-select" v-for="(meal,index) in data.setMeal" :key="index">
+              <div class="item-select-title">
+                <p>{{meal.attrName}}</p>
+              </div>
+              <div class="item-select-column">
+                <div class="item-select-row">
+                    <div class="item-select-box" v-for="(item,index1) in meal.value" :key="index1">
+                        <div class="item-select-img" v-show="item.attrImg">
+                          <img :src="item.attrImg" atr="">
+                        </div>
+                        <div class="item-select-intro">
+                          <p>{{item.attrValue}}</p>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+          
+          <!--<div class="item-select-title">
             <p>选择颜色</p>
           </div>
           <div class="item-select-column">
@@ -67,8 +83,7 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </div> -->
         <br>
         <div class="add-buy-car-box">
           <div class="add-buy-car">
@@ -102,12 +117,62 @@ export default {
       data:{
         goodsImg: [
         ],
-        itemTitle: '1234',
+        itemTitle: '',
         tags: ['满69-20元', '关注产品★送钢化膜', 'BIT配次日达'],
         discount: ['满148减10', '满218减20', '满288减30'],
         promotion: ['跨店满减', '多买优惠'],
         itemSales:'',
-        setMeal: []
+        setMeal: [
+            {
+                "attrId": 1,
+                "itemId": "37849334754447360",
+                "attrName": "版本",
+                "value": [
+                    {
+                        "attrKeyId": 1,
+                        "itemId": "37849334754447360",
+                        "symbol": 1,
+                        "attrValue": "8G+128G",
+                        "attrImg": ""
+                    },
+                    {
+                        "attrKeyId": 1,
+                        "itemId": "37849334754447360",
+                        "symbol": 2,
+                        "attrValue": "6G+128G",
+                        "attrImg": ""
+                    },
+                    {
+                        "attrKeyId": 1,
+                        "itemId": "37849334754447360",
+                        "symbol": 3,
+                        "attrValue": "8G+256G",
+                        "attrImg": ""
+                    }
+                ]
+            },
+            {
+                "attrId": 2,
+                "itemId": "37849334754447360",
+                "attrName": "颜色",
+                "value": [
+                    {
+                        "attrKeyId": 2,
+                        "itemId": "37849334754447360",
+                        "symbol": 4,
+                        "attrValue": "宝石蓝",
+                        "attrImg": "http://139.199.125.60/商品图片/Mix3/mix3_attr_1.jpg"
+                    },
+                    {
+                        "attrKeyId": 2,
+                        "itemId": "37849334754447360",
+                        "symbol": 5,
+                        "attrValue": "黑色",
+                        "attrImg": "http://139.199.125.60/商品图片/Mix3/mix3_attr_2.jpg"
+                    }
+                ]
+            }
+        ]
       }
     }
   },
@@ -126,25 +191,29 @@ export default {
       return oLeft
     },
     select (index1, index2) {
-      this.selectBoxIndex = index1 * 3 + index2;
-      this.price = this.data.setMeal[index1][index2].price;
+      //this.selectBoxIndex = index1 * 3 + index2;
+      //this.price = this.data.setMeal[index1][index2].price;
     },
     showBigImg (index) {
       this.imgIndex = index;
     },
     addShoppingCartBtn () {
-      const index1 = parseInt(this.selectBoxIndex / 3);
-      const index2 = this.selectBoxIndex % 3;
-      const date = new Date();
-      const goodsId = date.getTime();
-      const data = {
-        goods_id: goodsId,
-        itemTitle: this.data.itemTitle,
-        count: this.count,
-        package: this.data.setMeal[index1][index2]
-      };
-      this.addShoppingCart(data);
-      this.$router.push('/shoppingCart');
+      //const index1 = parseInt(this.selectBoxIndex / 3);
+     // const index2 = this.selectBoxIndex % 3;
+      //const date = new Date();
+      //const goodsId = date.getTime();
+     // const data = {
+     //   goods_id: goodsId,
+      //  itemTitle: this.data.itemTitle,
+      //  count: this.count,
+      //  package: this.data.setMeal[index1][index2]
+      //};
+     // this.addShoppingCart(data);
+     // this.$router.push('/shoppingCart');
+    },
+    stringHandler(str){
+      str = str.replace(/[\'\"\\\b\f\n\r\t]/g, '');
+      return str.split(",");
     },
     getItemDetail(itemId){
       this.$axios({
@@ -157,9 +226,9 @@ export default {
         const data = res.data.data;
         this.data.itemTitle = data.itemTitle;  
         this.data.itemSales = data.itemSales;
-        var str = data.itemDetailImage;
-        str = str.replace(/[\'\"\\\b\f\n\r\t]/g, '');
-        this.data.goodsImg = str.split(",");
+        this.data.goodsImg = this.stringHandler(data.itemDetailImage);
+        itemMessage.state.introImg = this.stringHandler(data.itemIntroImage);
+        this.data.setMeal = data.meal;
       }).catch(error=>{
         this.$Notice.open({
           title:"错误",
@@ -169,8 +238,8 @@ export default {
     }
   },
   mounted () {
-    console.log(itemMessage.state);
     this.itemId = itemMessage.state.itemId;
+    this.price = itemMessage.state.price;
     this.getItemDetail(this.itemId);
   }
 };

@@ -29,6 +29,9 @@
               <div class="goods-show-detail">
                 <span>{{item.intro}}</span>
               </div>
+							<div class="goods-show-num">
+							  库存<span>{{item.itemSales}}</span>件
+							</div>
               <div class="goods-show-num">
                 已售出<span>{{item.itemSales}}</span>件
               </div>

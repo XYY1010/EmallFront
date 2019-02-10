@@ -51,13 +51,16 @@
             </div>
           </div>
         </div>
+				<!-- 显示商品属性选择标签 -->
           <div class="item-select" v-for="(meal,index) in data.setMeal" :key="index">
               <div class="item-select-title">
                 <p>{{meal.attrName}}</p>
               </div>
               <div class="item-select-column">
                 <div class="item-select-row">
-                    <div class="item-select-box" v-for="(item,index1) in meal.value" :key="index1">
+                    <div class="item-select-box" v-for="(item,index1) in meal.value" 
+										:key="index1" @click="handlerClick(index,index1)"
+										v-bind:class="{mealselect:data.setMeal[index].value[index1].select}">
                         <div class="item-select-img" v-show="item.attrImg">
                           <img :src="item.attrImg" atr="">
                         </div>
@@ -68,22 +71,6 @@
                 </div>
               </div>
           </div>
-          
-          <!--<div class="item-select-title">
-            <p>选择颜色</p>
-          </div>
-          <div class="item-select-column">
-            <div class="item-select-row" v-for="(items, index) in data.setMeal" :key="index">
-              <div class="item-select-box" v-for="(item, index1) in items" :key="index1" @click="select(index, index1)" :class="{'item-select-box-active': ((index * 3) + index1) === selectBoxIndex}">
-                <div class="item-select-img">
-                  <img :src="item.img" alt="">
-                </div>
-                <div class="item-select-intro">
-                  <p>{{item.intro}}</p>
-                </div>
-              </div>
-            </div>
-          </div> -->
         <br>
         <div class="add-buy-car-box">
           <div class="add-buy-car">
@@ -110,6 +97,7 @@ export default {
   data () {
     return {
       itemId:'',
+			mealId:[],
       price: 0,
       count: 1,
       selectBoxIndex: 0,
@@ -122,57 +110,7 @@ export default {
         discount: ['满148减10', '满218减20', '满288减30'],
         promotion: ['跨店满减', '多买优惠'],
         itemSales:'',
-        setMeal: [
-            {
-                "attrId": 1,
-                "itemId": "37849334754447360",
-                "attrName": "版本",
-                "value": [
-                    {
-                        "attrKeyId": 1,
-                        "itemId": "37849334754447360",
-                        "symbol": 1,
-                        "attrValue": "8G+128G",
-                        "attrImg": ""
-                    },
-                    {
-                        "attrKeyId": 1,
-                        "itemId": "37849334754447360",
-                        "symbol": 2,
-                        "attrValue": "6G+128G",
-                        "attrImg": ""
-                    },
-                    {
-                        "attrKeyId": 1,
-                        "itemId": "37849334754447360",
-                        "symbol": 3,
-                        "attrValue": "8G+256G",
-                        "attrImg": ""
-                    }
-                ]
-            },
-            {
-                "attrId": 2,
-                "itemId": "37849334754447360",
-                "attrName": "颜色",
-                "value": [
-                    {
-                        "attrKeyId": 2,
-                        "itemId": "37849334754447360",
-                        "symbol": 4,
-                        "attrValue": "宝石蓝",
-                        "attrImg": "http://139.199.125.60/商品图片/Mix3/mix3_attr_1.jpg"
-                    },
-                    {
-                        "attrKeyId": 2,
-                        "itemId": "37849334754447360",
-                        "symbol": 5,
-                        "attrValue": "黑色",
-                        "attrImg": "http://139.199.125.60/商品图片/Mix3/mix3_attr_2.jpg"
-                    }
-                ]
-            }
-        ]
+        setMeal: []
       }
     }
   },
@@ -189,10 +127,6 @@ export default {
         o = oParent
       }
       return oLeft
-    },
-    select (index1, index2) {
-      //this.selectBoxIndex = index1 * 3 + index2;
-      //this.price = this.data.setMeal[index1][index2].price;
     },
     showBigImg (index) {
       this.imgIndex = index;
@@ -211,10 +145,12 @@ export default {
      // this.addShoppingCart(data);
      // this.$router.push('/shoppingCart');
     },
+		//处理商品图片字符串
     stringHandler(str){
       str = str.replace(/[\'\"\\\b\f\n\r\t]/g, '');
       return str.split(",");
     },
+		//获得商品的详情
     getItemDetail(itemId){
       this.$axios({
         method:'get',
@@ -232,10 +168,61 @@ export default {
       }).catch(error=>{
         this.$Notice.open({
           title:"错误",
-          desc:"服务器开小差了，请待会儿再试"
+          desc:"获得商品详情失败"
         });
       });
-    }
+    },
+		//获得商品的价格
+		getItemPrizeAndStock(itemId,symbol){
+			this.$axios({
+			  method:'get',
+			  url:'/item/getItemPrizeAndStock',
+			  params:{
+			    itemId:itemId,
+					symbol:symbol
+			  }
+			}).then(res=>{
+				if(res.data == '0'){
+					this.$Notice.open({
+					  title:"错误",
+					  desc:"没有这件商品"
+					});
+				}else {
+					this.price = res.data.data.price;
+				}
+			}).catch(error=>{
+			  this.$Notice.open({
+			    title:"错误",
+			    desc:"获得商品价格失败"
+			  });
+			});
+		},
+		//点击商品属性处理事件
+		handlerClick(index,index1){
+			var flag = true;
+			var symbol = '';
+			var i = 0;
+			var j = 0;
+			for(i = 0; i < this.data.setMeal.length; i++){
+				if(index==i){
+					for(j = 0; j < this.data.setMeal[i].value.length; j++){
+						this.data.setMeal[i].value[j].select = false;
+					}
+					this.data.setMeal[index].value[index1].select = true;
+					this.mealId[index] = this.data.setMeal[index].value[index1].symbol;
+				}
+			}
+			for(i = 0; i < this.data.setMeal.length; i++){
+				if(this.mealId[i]==null) flag = false;
+			}
+			if(flag == true){
+				symbol = this.mealId[0];
+				for(i = 1; i < this.data.setMeal.length; i++){
+					symbol += "," + this.mealId[i];
+				}
+				this.getItemPrizeAndStock(this.itemId,symbol);
+			}
+		}
   },
   mounted () {
     this.itemId = itemMessage.state.itemId;
@@ -421,6 +408,10 @@ export default {
 }
 .add-buy-car {
   margin-top: 15px;
+}
+.mealselect
+{
+background-color:#FF0000;
 }
 /******************商品图片及购买详情结束******************/
 </style>

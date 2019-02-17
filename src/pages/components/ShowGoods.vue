@@ -25,7 +25,7 @@
           <div class="item-price-left">
             <div class="item-price-row">
               <p>
-                <span class="item-price-title">B I T 价</span>
+                <span class="item-price-title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>
                 <span class="item-price">￥{{price.toFixed(2)}}</span>
               </p>
             </div>
@@ -48,6 +48,10 @@
               <p>
                 <span class="item-remarks-num">{{data.itemSales}} 件</span>
               </p>
+							<p>库存</p>
+							<p>
+							  <span class="item-remarks-num">{{stock}} 件</span>
+							</p>
             </div>
           </div>
         </div>
@@ -98,6 +102,7 @@ export default {
     return {
       itemId:'',
 			mealId:[],
+			stock:'',
       price: 0,
       count: 1,
       selectBoxIndex: 0,
@@ -106,7 +111,7 @@ export default {
         goodsImg: [
         ],
         itemTitle: '',
-        tags: ['满69-20元', '关注产品★送钢化膜', 'BIT配次日达'],
+        tags: ['送钢化膜', '次日到达'],
         discount: ['满148减10', '满218减20', '满288减30'],
         promotion: ['跨店满减', '多买优惠'],
         itemSales:'',
@@ -189,6 +194,7 @@ export default {
 					});
 				}else {
 					this.price = res.data.data.price;
+					this.stock = res.data.data.stock;
 				}
 			}).catch(error=>{
 			  this.$Notice.open({
@@ -227,6 +233,7 @@ export default {
   mounted () {
     this.itemId = itemMessage.state.itemId;
     this.price = itemMessage.state.price;
+		this.stock = itemMessage.state.stock;
     this.getItemDetail(this.itemId);
   }
 };

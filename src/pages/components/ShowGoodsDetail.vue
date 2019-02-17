@@ -29,17 +29,6 @@
                 <img :src="item" alt="" v-for="(item,index) in data.goodsDetail" :key="index">
               </div>
             </TabPane>
-            <TabPane label="规格参数">
-              <div class="remarks-title">
-                <span>规格参数</span>
-              </div>
-              <div class="item-param-container">
-                <span class="item-param-box" v-for="(item,index) in data.param" :key="index">
-                  <span class="item-param-title">{{item.title}}: </span>
-                  <span class="item-param-content">{{item.content}}</span>
-                </span>
-              </div>
-            </TabPane>
             <TabPane label="售后保障">
               <ShowProductWarranty></ShowProductWarranty>
             </TabPane>
@@ -105,44 +94,6 @@ export default {
       data:{
         hot: [],
         goodsDetail: [],
-        param: [
-          {
-            title: '商品名称',
-            content: 'iPhone 7手机壳'
-          },
-          {
-            title: '商品编号',
-            content: '10435663237'
-          },
-          {
-            title: '店铺',
-            content: 'Gavin Shop'
-          },
-          {
-            title: '商品毛重',
-            content: '100.00g'
-          },
-          {
-            title: '商品产地',
-            content: '中国大陆'
-          },
-          {
-            title: '机型',
-            content: 'iPhone 7'
-          },
-          {
-            title: '材质',
-            content: 'PC/塑料'
-          },
-          {
-            title: '款式',
-            content: '软壳'
-          },
-          {
-            title: '适用人群',
-            content: '通用'
-          }
-        ],
         remarks: {
           goodAnalyse: 90,
           remarksTags: [ '颜色可人', '实惠优选', '严丝合缝', '极致轻薄', '质量没话说', '比定做还合适', '完美品质', '正品行货', '包装有档次', '不容易发热', '已经买第二个', '是全覆盖' ],

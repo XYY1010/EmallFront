@@ -7,7 +7,8 @@
     export default new Vuex.Store({
     	state:{
     		itemId:'',
-            price:''
+            price:'',
+			stock:''
     	},
     	mutations:{
     		setItemId(state,message){
@@ -15,6 +16,9 @@
     		},
             setPrice(state,message){
                 state.price = message;
-            }
+            },
+			setStock(state,messaage){
+				state.stock = messaage;
+			}
     	}
     })

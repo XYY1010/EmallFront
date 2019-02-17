@@ -12,7 +12,7 @@
         <div class="goods-list-box">
           <div class="goods-list-tool">
             <ul>
-              <li v-for="(item,index) in goodsTool" :key="index" @click="orderBy(item.en, index)"><span :class="{ 'goods-list-tool-active': isAction[index]}">{{item.title}} <Icon :type="icon[index]"></Icon></span></li>
+              <li v-for="(item,index) in goodsTool" :key="index" @click="orderBy(item.en, index)"><span :class="{ 'goods-list-tool-active': isAction[index]}">{{item.title}} <i :class="icon[index]"></i></span></li>
             </ul>
           </div>
           <div class="goods-list">
@@ -30,7 +30,7 @@
                 <span>{{item.intro}}</span>
               </div>
 							<div class="goods-show-num">
-							  库存<span>{{item.itemSales}}</span>件
+							  库存<span>{{item.stock}}</span>件
 							</div>
               <div class="goods-show-num">
                 已售出<span>{{item.itemSales}}</span>件
@@ -72,10 +72,10 @@ export default {
       pageSize:10,//默认每页显示个数是10个
       sreachItem: '',
       isAction: [ true, false, false ],
-      icon: [ 'arrow-up-a', 'arrow-down-a', 'arrow-down-a' ],
+      icon: [ 'el-icon-caret-top', 'el-icon-caret-down', 'el-icon-caret-down' ],
       goodsTool: [
-        {title: '综合', en: 'sale'},
-        {title: '评论数', en: 'remarks'},
+				{title: '综合', en: 'all'},
+        {title: '销量', en: 'sale'},
         {title: '价格', en: 'price'}
       ],
         goodsList: []
@@ -85,15 +85,15 @@ export default {
   },
   methods: {
     orderBy (data, index) {
-      this.icon = [ 'arrow-down-a', 'arrow-down-a', 'arrow-down-a' ];
+      this.icon = [ 'el-icon-caret-down', 'el-icon-caret-down', 'el-icon-caret-down' ];
       this.isAction = [ false, false, false ];
       this.isAction[index] = true;
-      this.icon[index] = 'arrow-up-a';
+      this.icon[index] = 'el-icon-caret-top';
       if(index==0){
         //alert(1);
-        this.getItems(pageNum,pageSize);
+        this.goodsList = this.goodsList;
       }else if(index==1){
-        this.sortByKey(this.goodsList,'remarks');
+        this.sortByKey(this.goodsList,'itemSales');
          //alert(2);
       }else{
         this.sortByKey(this.goodsList,'price');
@@ -147,6 +147,7 @@ export default {
     handlerClickImg(index){
       itemMessage.commit('setItemId',this.goodsList[index].itemId);
       itemMessage.commit('setPrice',this.goodsList[index].price);
+			itemMessage.commit('setStock',this.goodsList[index].stock);
     }
   },
   mounted () {

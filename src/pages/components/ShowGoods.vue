@@ -93,6 +93,7 @@
 // import { mapState, mapActions } from 'vuex';
 import MyMagnify from "./MyMagnify.vue";
 import itemMessage from '../../vuex/item.js';
+import userMessage from '../../vuex/user.js';
 export default {
   name: 'ShowGoods',
   components: {
@@ -101,6 +102,7 @@ export default {
   data () {
     return {
       itemId:'',
+			stockId:'',
 			mealId:[],
 			stock:'',
       price: 0,
@@ -119,8 +121,6 @@ export default {
       }
     }
   },
-  computed: {
-  },
   methods: {
     fun:function(){
       var o = document.getElementById("magnify_img");
@@ -136,19 +136,54 @@ export default {
     showBigImg (index) {
       this.imgIndex = index;
     },
+		//获得属性标签集
+		getAttrVals(){
+			var i = 0;
+			var j = 0;
+			var attrVals = '';
+			for(i = 0; i < this.data.setMeal.length; i++){
+				for(j = 0; j < this.data.setMeal[i].value.length; j++){
+					if(this.data.setMeal[i].value[j].select == true){
+						attrVals += this.data.setMeal[i].value[j].attrValue + ' ‘;
+					}
+				}
+			}
+			return attrVals;
+		},
+		//获得属性图片
+		getAttrImg(){
+			var i = 0;
+			var j = 0;
+			for(i = 0; i < this.data.setMeal.length; i++){
+				for(j = 0; j < this.data.setMeal[i].value.length; j++){
+					if(this.data.setMeal[i].value[j].select == true&&this.data.setMeal[i].value[j].attrImg!=""){
+						return this.data.setMeal[i].value[j].attrImg;
+					}
+				}
+			}
+		},
     addShoppingCartBtn () {
-      //const index1 = parseInt(this.selectBoxIndex / 3);
-     // const index2 = this.selectBoxIndex % 3;
-      //const date = new Date();
-      //const goodsId = date.getTime();
-     // const data = {
-     //   goods_id: goodsId,
-      //  itemTitle: this.data.itemTitle,
-      //  count: this.count,
-      //  package: this.data.setMeal[index1][index2]
-      //};
-     // this.addShoppingCart(data);
-     // this.$router.push('/shoppingCart');
+			this.$axios({
+				method:'post',
+				url:'/shoppingcart/addnew',
+				params:{
+					itemId:this.itemId,
+					itemTitle:this.data.itemTitle,
+					userId:userMessage.state.user.userId,
+					stockId:this.stockId,
+					attrVals:this.getAttrVals(),
+					attrImg:this.getAttrImg(),
+					price:this.price,
+					amount:this.count
+				}
+			}).then(res=>{
+				alert("添加购物车成功");
+			}).catch(error=>{
+				this.$Notice.open({
+					title:"错误",
+					desc:"加入购物车失败"
+				});
+			});
     },
 		//处理商品图片字符串
     stringHandler(str){
@@ -195,6 +230,7 @@ export default {
 				}else {
 					this.price = res.data.data.price;
 					this.stock = res.data.data.stock;
+					this.stock = res.data.data.stockId;
 				}
 			}).catch(error=>{
 			  this.$Notice.open({

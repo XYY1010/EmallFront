@@ -1,4 +1,5 @@
 <template>
+  <Affix :offset-top="0">
   <div class="head">
     <div class="headerNav">
       <nav class="top">
@@ -88,6 +89,7 @@
       </nav>
     </div>
   </div>
+</Affix>
 </template>
 
 <script>

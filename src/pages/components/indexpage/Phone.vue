@@ -174,7 +174,7 @@ export default {
 }
 .box-right .box-item .old-price {
   color: #b0b0b0;
-  text-align: line-through;
+  text-decoration: line-through;
 }
 .box-right .box-item .box-title {
   font-size: 14px;

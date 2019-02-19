@@ -14,7 +14,7 @@
       <div class="item-detail-right">
         <div class="item-detail-title">
           <p>
-            <span class="item-detail-express">校园配送</span> {{data.title}}</p>
+            <span class="item-detail-express">校园配送</span> {{data.itemTitle}}</p>
         </div>
         <div class="item-detail-tag">
           <p>
@@ -25,7 +25,7 @@
           <div class="item-price-left">
             <div class="item-price-row">
               <p>
-                <span class="item-price-title">B I T 价</span>
+                <span class="item-price-title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>
                 <span class="item-price">￥{{price.toFixed(2)}}</span>
               </p>
             </div>
@@ -44,49 +44,43 @@
           </div>
           <div class="item-price-right">
             <div class="item-remarks-sum">
-              <p>累计评价</p>
+              <p>累计销量</p>
               <p>
-                <span class="item-remarks-num">{{data.remarksNum}} 条</span>
+                <span class="item-remarks-num">{{data.itemSales}} 件</span>
               </p>
+							<p>库存</p>
+							<p>
+							  <span class="item-remarks-num">{{stock}} 件</span>
+							</p>
             </div>
           </div>
         </div>
-        <!-- 选择颜色 -->
-        <div class="item-select">
-          <div class="item-select-title">
-            <p>选择颜色</p>
-          </div>
-          <div class="item-select-column">
-            <div class="item-select-row" v-for="(items, index) in data.setMeal" :key="index">
-              <div class="item-select-box" v-for="(item, index1) in items" :key="index1" @click="select(index, index1)" :class="{'item-select-box-active': ((index * 3) + index1) === selectBoxIndex}">
-                <div class="item-select-img">
-                  <img :src="item.img" alt="">
-                </div>
-                <div class="item-select-intro">
-                  <p>{{item.intro}}</p>
+				<!-- 显示商品属性选择标签 -->
+          <div class="item-select" v-for="(meal,index) in data.setMeal" :key="index">
+              <div class="item-select-title">
+                <p>{{meal.attrName}}</p>
+              </div>
+              <div class="item-select-column">
+                <div class="item-select-row">
+                    <div class="item-select-box" v-for="(item,index1) in meal.value"
+										:key="index1" @click="handlerClick(index,index1)"
+										v-bind:class="{'mealselect':data.setMeal[index].value[index1].select}">
+                        <div class="item-select-img" v-show="item.attrImg">
+                          <img :src="item.attrImg" atr="">
+                        </div>
+                        <div class="item-select-intro">
+                          <p>{{item.attrValue}}</p>
+                        </div>
+                    </div>
                 </div>
               </div>
-            </div>
           </div>
-        </div>
-        <!-- 白条分期 -->
-        <div class="item-select">
-          <div class="item-select-title">
-            <p>白条分期</p>
-          </div>
-          <div class="item-select-row">
-            <div class="item-select-class" v-for="(item,index) in hirePurchase" :key="index">
-              <Tooltip :content="item.tooltip" placement="top-start">
-                <span>{{item.type}}</span>
-              </Tooltip>
-            </div>
-          </div>
-        </div>
         <br>
         <div class="add-buy-car-box">
           <div class="add-buy-car">
             <InputNumber :min="1" v-model="count" size="large"></InputNumber>
-            <Button type="error" size="large" @click="addShoppingCartBtn()">加入购物车</Button>
+            <Button type="error" size="large" :disabled="btnUnClickAble" @click="addShoppingCartBtn()">加入购物车</Button>
+            <Button type="error" size="large" :disabled="btnUnClickAble" @click="buyNowBtn()">立即购买</Button>
           </div>
         </div>
       </div>
@@ -98,6 +92,8 @@
 // import store from '@/vuex/store';
 // import { mapState, mapActions } from 'vuex';
 import MyMagnify from "./MyMagnify.vue";
+import itemMessage from '../../vuex/item.js';
+import userMessage from '../../vuex/user.js';
 export default {
   name: 'ShowGoods',
   components: {
@@ -105,106 +101,27 @@ export default {
   },
   data () {
     return {
+      itemId:'',
+	  stockId:'',
+	  mealId:[],
+	  itemInfo:{},
+	  userInfo:{},
+	  stock:'',
       price: 0,
       count: 1,
       selectBoxIndex: 0,
       imgIndex: 0,
+	  btnUnClickAble:false,
       data:{
         goodsImg: [
-          'http://139.199.125.60/goodsDetail/item-detail-1.jpg',
-          'http://139.199.125.60/goodsDetail/item-detail-2.jpg',
-          'http://139.199.125.60/goodsDetail/item-detail-3.jpg',
-          'http://139.199.125.60/goodsDetail/item-detail-4.jpg'
         ],
-        title: '苹果8/7手机壳iPhone7 Plus保护壳全包防摔磨砂硬外壳',
-        tags: ['满69-20元', '关注产品★送钢化膜', 'BIT配次日达'],
+        itemTitle: '',
+        tags: ['送钢化膜', '次日到达'],
         discount: ['满148减10', '满218减20', '满288减30'],
         promotion: ['跨店满减', '多买优惠'],
-        remarksNum: 6000,
-        setMeal: [
-          [
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/1.jpg',
-              intro: '4.7英寸-深邃蓝',
-              price: 28.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/2.jpg',
-              intro: '4.7英寸-星空黑',
-              price: 29.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/3.jpg',
-              intro: '5.5英寸-香槟金',
-              price: 28.5
-            }
-          ],
-          [
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/4.jpg',
-              intro: '5.5英寸-玫瑰金',
-              price: 32.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/5.jpg',
-              intro: '5.5英寸-深邃蓝',
-              price: 32.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/6.jpg',
-              intro: '5.5英寸-星空黑',
-              price: 35.0
-            }
-          ],
-          [
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/7.jpg',
-              intro: '4.7英寸-香槟金',
-              price: 26.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/8.jpg',
-              intro: '4.7英寸-玫瑰金',
-              price: 25.0
-            },
-            {
-              img: 'http://139.199.125.60/goodsDetail/pack/9.jpg',
-              intro: '4.7英寸-中国红',
-              price: 28.0
-            }
-          ]
-        ]
+        itemSales:'',
+        setMeal: []
       }
-    }
-  },
-  computed: {
-    hirePurchase () {
-      const three = this.price * this.count / 3;
-      const sex = this.price * this.count / 6;
-      const twelve = this.price * this.count / 12 * 1.0025;
-      const twentyFour = this.price * this.count / 24 * 1.005;
-      return [
-        {
-          tooltip: '无手续费',
-          type: '不分期'
-        },
-        {
-          tooltip: '无手续费',
-          type: `￥${three.toFixed(2)} x 3期`
-        },
-        {
-          tooltip: '无手续费',
-          type: `￥${sex.toFixed(2)} x 6期`
-        },
-        {
-          tooltip: '含手续费：费率0.25%起，￥0.1起×12期',
-          type: `￥${twelve.toFixed(2)} x 12期`
-        },
-        {
-          tooltip: '含手续费：费率0.5%起，￥0.1起×12期',
-          type: `￥${twentyFour.toFixed(2)} x 24期`
-        }
-      ];
     }
   },
   methods: {
@@ -219,34 +136,159 @@ export default {
       }
       return oLeft
     },
-    select (index1, index2) {
-      this.selectBoxIndex = index1 * 3 + index2;
-      this.price = this.data.setMeal[index1][index2].price;
-    },
     showBigImg (index) {
       this.imgIndex = index;
     },
+		//获得属性标签集
+		getAttrVals(){
+			var i = 0;
+			var j = 0;
+			var attrVals = '';
+			for(i = 0; i < this.data.setMeal.length; i++){
+				for(j = 0; j < this.data.setMeal[i].value.length; j++){
+					if(this.data.setMeal[i].value[j].select == true){
+						attrVals += this.data.setMeal[i].value[j].attrValue + ' ';
+					}
+				}
+			}
+			return attrVals;
+		},
+		//获得属性图片
+		getAttrImg(){
+			var i = 0;
+			var j = 0;
+			for(i = 0; i < this.data.setMeal.length; i++){
+				for(j = 0; j < this.data.setMeal[i].value.length; j++){
+					if(this.data.setMeal[i].value[j].select == true&&this.data.setMeal[i].value[j].attrImg!=""){
+						return this.data.setMeal[i].value[j].attrImg;
+					}
+				}
+			}
+		},
+		//添加购物车
     addShoppingCartBtn () {
-      const index1 = parseInt(this.selectBoxIndex / 3);
-      const index2 = this.selectBoxIndex % 3;
-      const date = new Date();
-      const goodsId = date.getTime();
-      const data = {
-        goods_id: goodsId,
-        title: this.data.title,
-        count: this.count,
-        package: this.data.setMeal[index1][index2]
-      };
-      this.addShoppingCart(data);
-      this.$router.push('/shoppingCart');
+			this.$axios({
+				method:'post',
+				url:'/shoppingcart/addnew',
+				params:{
+					itemId:this.itemInfo.itemId,
+					itemTitle:this.data.itemTitle,
+					userId:this.userInfo.userId,
+					stockId:this.stockId,
+					attrVals:this.getAttrVals(),
+					attrImg:this.getAttrImg(),
+					price:this.price,
+					amount:this.count
+				}
+			}).then(res=>{
+        let result = res.data;
+        console.log(result);
+        if (result.status == 'success') {
+          this.$Message.success('添加成功！');
+          this.$router.push("/shoppingcart");
+        } else {
+          this.$Notice.open({
+            title: "错误" + this.result.data.errCode,
+            desc: this.result.data.errMsg
+          });
+        }
+			}).catch(error=>{
+				this.$Notice.open({
+					title:"错误",
+					desc:"加入购物车失败"
+				});
+			});
     },
+		//立即购买
+		buyNowBtn(){
+
+		},
+		//处理商品图片字符串
+    stringHandler(str){
+      str = str.replace(/[\'\"\\\b\f\n\r\t]/g, '');
+      return str.split(",");
+    },
+		//获得商品的详情
+    getItemDetail(itemId){
+      this.$axios({
+        method:'get',
+        url:'/item/getItemDetail',
+        params:{
+          itemId:itemId
+        }
+      }).then(res=>{
+        const data = res.data.data;
+				this.data.setMeal = data.meal;
+        this.data.itemTitle = data.itemTitle;
+        this.data.itemSales = data.itemSales;
+        this.data.goodsImg = this.stringHandler(data.itemDetailImage);
+      }).catch(error=>{
+        this.$Notice.open({
+          title:"错误",
+          desc:"获得商品详情失败"
+        });
+      });
+    },
+		//获得商品的价格
+		getItemPrizeAndStock(itemId,symbol){
+			this.$axios({
+			  method:'get',
+			  url:'/item/getItemPrizeAndStock',
+			  params:{
+			    itemId:itemId,
+					symbol:symbol
+			  }
+			}).then(res=>{
+				if(res.data.status == 'false'){
+					this.stock = 0;
+					this.price = 0;
+					this.btnUnClickAble = true;
+				}else {
+					this.price = res.data.data.price;
+					this.stock = res.data.data.stock;
+					this.stockId = res.data.data.stockId;
+					this.btnUnClickAble = false;
+				}
+			}).catch(error=>{
+			  this.$Notice.open({
+			    title:"错误",
+			    desc:"获得商品价格失败"
+			  });
+			});
+		},
+		//点击商品属性处理事件
+		handlerClick(index,index1){
+			//alert(index + " " + index1);
+			var flag = true;
+			var symbol = '';
+			var i = 0;
+			var j = 0;
+			for(j = 0; j < this.data.setMeal[index].value.length; j++){
+				this.data.setMeal[index].value[j].select = false;
+			}
+			this.data.setMeal[index].value[index1].select = true;
+			this.mealId[index] = this.data.setMeal[index].value[index1].symbol;
+			for(i = 0; i < this.data.setMeal.length; i++){
+				if(this.mealId[i]==null) flag = false;
+			}
+			if(flag == true){
+				symbol = this.mealId[0];
+				for(i = 1; i < this.data.setMeal.length; i++){
+					symbol += "," + this.mealId[i];
+				}
+				this.getItemPrizeAndStock(this.itemId,symbol);
+			}
+		}
   },
   mounted () {
-    const father = this;
-    setTimeout(() => {
-      father.price = father.data.setMeal[0][0].price || 0;
-    }, 300);
-  }
+		this.itemInfo = this.$store.getters.item;
+		this.userInfo = this.$store.getters.user;
+		this.itemId = this.itemInfo.itemId;
+		this.price = this.itemInfo.price;
+		this.stock = this.itemInfo.stock;
+    this.getItemDetail(this.itemId);
+  },
+
 };
 </script>
 
@@ -426,6 +468,10 @@ export default {
 }
 .add-buy-car {
   margin-top: 15px;
+}
+.mealselect
+{
+background-color:#FF0000;
 }
 /******************商品图片及购买详情结束******************/
 </style>

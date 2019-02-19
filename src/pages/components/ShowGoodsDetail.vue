@@ -13,7 +13,7 @@
             <div class="item-recommend-intro">
               <span>
                 <span class="item-recommend-top-num">{{index + 1}}</span> 热销{{item.sale}}件</span>
-              <span class="item-recommend-price">￥{{item.price.toFixed(2)}}</span>
+              <span class="item-recommend-price">￥{{item.prize.toFixed(2)}}</span>
             </div>
           </div>
         </div>
@@ -29,20 +29,6 @@
                 <img :src="item" alt="" v-for="(item,index) in data.goodsDetail" :key="index">
               </div>
             </TabPane>
-            <TabPane label="规格参数">
-              <div class="remarks-title">
-                <span>规格参数</span>
-              </div>
-              <div class="item-param-container">
-                <span class="item-param-box" v-for="(item,index) in data.param" :key="index">
-                  <span class="item-param-title">{{item.title}}: </span>
-                  <span class="item-param-content">{{item.content}}</span>
-                </span>
-              </div>
-            </TabPane>
-            <TabPane label="售后保障">
-              <ShowProductWarranty></ShowProductWarranty>
-            </TabPane>
             <TabPane label="商品评价">
               <div class="remarks-container">
                 <div class="remarks-title">
@@ -51,7 +37,7 @@
                 <div class="remarks-analyse-box">
                   <div class="remarks-analyse-goods">
                     <i-circle :percent="data.remarks.goodAnalyse" stroke-color="#e4393c">
-                      <span class="remarks-analyse-num">{{data.remarks.goodAnalyse}}%</span>
+                      <span class="remarks-analyse-num">{{data.remarks.goodAnalyse.toFixed(1)}}%</span>
                       <p class="remarks-analyse-title">好评率</p>
                     </i-circle>
                   </div>
@@ -60,12 +46,11 @@
                   </div>
                 </div>
                 <div class="remarks-bar">
-                  <span>追评({{data.remarks.remarksNumDetail[0]}})</span>
-                  <span>好评({{data.remarks.remarksNumDetail[1]}})</span>
-                  <span>中评({{data.remarks.remarksNumDetail[2]}})</span>
-                  <span>差评({{data.remarks.remarksNumDetail[3]}})</span>
+                  <span>好评({{data.remarks.remarksNumDetail[0]}})</span>
+                  <span>中评({{data.remarks.remarksNumDetail[1]}})</span>
+                  <span>差评({{data.remarks.remarksNumDetail[2]}})</span>
                 </div>
-                <div class="remarks-box" v-for="(item,index) in data.remarks.detail" :key="index">
+                <div class="remarks-box" v-for="(item,index) in historyData" :key="index">
                   <div class="remarks-user">
                     <Avatar icon="person" />
                     <span class="remarks-user-name">{{item.username}}</span>
@@ -76,16 +61,22 @@
                     </p>
                     <p class="remarks-content">{{item.content}}</p>
                     <p class="remarks-sub">
-                      <span class="remarks-item">{{item.goods}}</span>
-                      <span class="remarks-time">{{item.time}}</span>
+                      <span class="remarks-item">{{item.goodsMeal}}</span>
+                      <span class="remarks-time">{{item.createTime.substr(0,10)}}</span>
                     </p>
                   </div>
                 </div>
                 <div class="remarks-page">
-                  <Page :total="40" size="small" show-elevator show-sizer></Page>
+                  <Page :total="totalComment" :current="pageNum" :page-size="pageSize"
+												@on-change="handlePage"
+												@on-page-size-change="handlePageSize" show-sizer>
+									</Page>
                 </div>
               </div>
             </TabPane>
+						<TabPane label="售后保障">
+						  <ShowProductWarranty></ShowProductWarranty>
+						</TabPane>
           </Tabs>
         </div>
       </div>
@@ -99,157 +90,130 @@ export default {
   name: 'ShowGoodsDetail',
   data () {
     return {
+			totalComment:100,
+			pageNum:1,
+			pageSize:10,
+      HotItemNumber:4,
       tagsColor: [ 'blue', 'green', 'red', 'yellow' ],
+			itemInfo:{},
+			dataTable:[],
+			ajaxHistoryData:[],
+			historyData:[],
       data:{
-        hot: [
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/1.jpg',
-            price: 28.0,
-            sale: 165076
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/2.jpg',
-            price: 36.0,
-            sale: 135078
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/3.jpg',
-            price: 38.0,
-            sale: 105073
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/4.jpg',
-            price: 39.0,
-            sale: 95079
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/5.jpg',
-            price: 25.0,
-            sale: 5077
-          },
-          {
-            img: 'http://139.199.125.60/goodsDetail/hot/6.jpg',
-            price: 20.0,
-            sale: 3077
-          }
-        ],
-        goodsDetail: [
-          'http://139.199.125.60/goodsDetail/intro/1.jpg',
-          'http://139.199.125.60/goodsDetail/intro/2.jpg',
-          'http://139.199.125.60/goodsDetail/intro/3.jpg',
-          'http://139.199.125.60/goodsDetail/intro/4.jpg'
-        ],
-        param: [
-          {
-            title: '商品名称',
-            content: 'iPhone 7手机壳'
-          },
-          {
-            title: '商品编号',
-            content: '10435663237'
-          },
-          {
-            title: '店铺',
-            content: 'Gavin Shop'
-          },
-          {
-            title: '商品毛重',
-            content: '100.00g'
-          },
-          {
-            title: '商品产地',
-            content: '中国大陆'
-          },
-          {
-            title: '机型',
-            content: 'iPhone 7'
-          },
-          {
-            title: '材质',
-            content: 'PC/塑料'
-          },
-          {
-            title: '款式',
-            content: '软壳'
-          },
-          {
-            title: '适用人群',
-            content: '通用'
-          }
-        ],
+        hot: [],
+        goodsDetail: [],
         remarks: {
           goodAnalyse: 90,
           remarksTags: [ '颜色可人', '实惠优选', '严丝合缝', '极致轻薄', '质量没话说', '比定做还合适', '完美品质', '正品行货', '包装有档次', '不容易发热', '已经买第二个', '是全覆盖' ],
-          remarksNumDetail: [ 2000, 3000, 900, 1 ],
-          detail: [
-            {
-              username: 'p****1',
-              values: 3,
-              content: '颜色很好看，质量也不错！，还送了个指环，想不到哦！',
-              goods: '4.7英寸-深邃蓝',
-              create_at: '2018-05-15 09:20'
-            },
-            {
-              username: '13****1',
-              values: 5,
-              content: '手感没的说，是硬壳，后背带有磨砂手感。很不错，很喜欢，还加送了钢化膜，支架环，物超所值，准备再买一个。很满意。物流很快。很愉快的一次购物！',
-              goods: '5.5英寸-玫瑰金',
-              create_at: '2018-05-13 15:23'
-            },
-            {
-              username: '3****z',
-              values: 4.5,
-              content: '相当轻薄，店家还送了一大堆配件，*元非常值得！',
-              goods: '4.7英寸-玫瑰金',
-              create_at: '2018-05-05 12:25'
-            },
-            {
-              username: 'gd****c',
-              values: 3.5,
-              content: '就是我想要的手机壳，壳子很薄，手感不错，就像没装手机壳一样，想要裸机手感的赶快下手了。',
-              goods: '4.7英寸-中国红',
-              create_at: '2018-04-06 16:23'
-            },
-            {
-              username: 'r****b',
-              values: 4.5,
-              content: '壳子还不错，送的膜也可以，不过还是感觉膜小了那么一点，屏幕没法完全覆盖。对了，壳子稍微有点硬，可能会伤漆，所以不要频繁取壳就好。',
-              goods: '4.7英寸-中国红',
-              create_at: '2018-03-15 19:24'
-            },
-            {
-              username: 'd****e',
-              values: 5,
-              content: '磨砂的，相当漂亮，尺寸非常合适！精工细作！',
-              goods: '5.5英寸-星空黑',
-              create_at: '2018-03-10 10:13'
-            }
-          ]
+          remarksNumDetail: [ 0, 0, 0 ],
         }
       }
     };
   },
-  methods: {
-    changeHeight () {
-      let heightCss = window.getComputedStyle(this.$refs.itemIntroGoods).height;
-      console.log(heightCss);
-      heightCss = parseInt(heightCss.substr(0, heightCss.length - 2)) + 89;
-      this.$refs.itemIntroDetail.style.height = heightCss + 'px';
-    }
+  mounted(){
+		this.itemInfo = this.$store.getters.item;
+    this.getHotItems(this.HotItemNumber);
+    this.getIntroImg(this.itemInfo.itemId);
+		this.getComments(this.itemInfo.itemId);
   },
-  updated () {
-    this.$nextTick(() => {
-      setTimeout(this.changeHeight, 100);
-      setTimeout(this.changeHeight, 1000);
-      setTimeout(this.changeHeight, 3000);
-      setTimeout(this.changeHeight, 5000);
-      setTimeout(this.changeHeight, 10000);
-      setTimeout(this.changeHeight, 15000);
-      setTimeout(this.changeHeight, 20000);
-      setTimeout(this.changeHeight, 25000);
-      setTimeout(this.changeHeight, 30000);
-      setTimeout(this.changeHeight, 50000);
-    });
+  methods: {
+		// 获取历史记录信息
+    handleListApproveHistory(){
+      // 保存取到的所有数据
+      this.ajaxHistoryData = this.dataTable;
+      this.totalComment = this.dataTable.length;
+      // 初始化显示，小于每页显示条数，全显，大于每页显示条数，取前每页条数显示
+      if(this.dataTable.length < this.pageSize){
+        this.historyData = this.ajaxHistoryData;
+      }else{
+        this.historyData = this.ajaxHistoryData.slice(0,this.pageSize);
+      }
+    },
+		changepage(){
+      var _start = ( this.pageNum - 1 ) * this.pageSize;
+      var _end = this.pageNum * this.pageSize;
+      this.historyData = this.ajaxHistoryData.slice(_start,_end);
+    },
+		handlePage(value){
+      this.pageNum = value;
+      this.changepage();
+    },
+    handlePageSize(value){
+      this.pageSize = value;
+			this.pageNum = 1;
+			this.historyData = this.ajaxHistoryData.slice(0,this.pageSize);
+    },
+    stringHandler(str){
+      str = str.replace(/[\'\"\\\b\f\n\r\t]/g, '');
+      return str.split(",");
+    },
+    getHotItems(number){
+      this.$axios({
+        method:'get',
+        url:'/item/getHotItems',
+        params:{
+          number:number
+        }
+      }).then(res=>{
+        this.data.hot = res.data.data;
+      }).catch(error=>{
+        this.$Notice.open({
+          title:"错误",
+          desc:"服务器开小差了，请待会儿再试"
+        });
+      });
+    },
+		getDifferentCommentTypeNumber(){
+			for(var i = 0; i < this.dataTable.length; i++){
+				if(this.dataTable[i].values==5){
+					this.data.remarks.remarksNumDetail[0] += 1;
+				}else if(this.dataTable[i].values==3){
+					this.data.remarks.remarksNumDetail[1] += 1;
+				}else{
+					this.data.remarks.remarksNumDetail[2] += 1;
+				}
+			}
+			var temp = this.data.remarks.remarksNumDetail[0]+this.data.remarks.remarksNumDetail[1]+this.data.remarks.remarksNumDetail[2];
+			if(temp==0){
+				this.data.remarks.goodAnalyse = 100;
+			}else{
+				this.data.remarks.goodAnalyse = this.data.remarks.remarksNumDetail[0] * 100.0/ temp;
+			}
+		},
+		getComments(itemId){
+			this.$axios({
+				method:'get',
+				url:'/item/getComments',
+				params:{
+					itemId:itemId
+				}
+			}).then(res=>{
+				this.dataTable = res.data.data;
+				this.handleListApproveHistory();
+				this.getDifferentCommentTypeNumber();
+			}).catch(error=>{
+        this.$Notice.open({
+          title:"错误",
+          desc:"获得评论失败"
+        });
+			});
+		},
+    getIntroImg(itemId){
+      this.$axios({
+        method:'get',
+        url:'/item/getIntroImg',
+        params:{
+          itemId:itemId
+        }
+      }).then(res=>{
+        this.data.goodsDetail = this.stringHandler(res.data.data);
+      }).catch(error=>{
+        this.$Notice.open({
+          title:"错误",
+          desc:"服务器开小差了，请待会儿再试"
+        });
+      });
+    }
   },
   components: {
     ShowProductWarranty

@@ -17,6 +17,7 @@
         <p>确定将该商品从购物车中移除吗？</p>
     </Modal>
     <Table border ref="selection" :columns="columns" :data="shoppingCart" :loading="loading" size="large" @on-selection-change="select" no-data-text="您的购物车空空如也~ 请先添加商品到购物车再点击购买"></Table>
+
     <div class="pay-container">
       <div class="pay-box">
         <p> <span>应付总金额</span> <span class="money"></span> <Icon type="logo-yen"></Icon> {{totalPrice.toFixed(2)}}</p>

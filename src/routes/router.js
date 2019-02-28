@@ -1,12 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Login from '../pages/login.vue';
-import Register from '../pages/register.vue';
-import Index from '../pages/views/index.vue';
-import ShoppingCart from '../pages/views/shoppingcart.vue';
-import GoodsDetail from '../pages/views/goodsdetail.vue';
-import GoodsList from '../pages/views/goodslist.vue'
-import UserCenter from '../pages/views/usercenter.vue';
 
 Vue.use(Router)
 
@@ -20,105 +13,105 @@ const router = new Router({
     }, {
       path: '/login',
       name: 'login',
-      component: Login
+      component: resolve => require(['../pages/login.vue'], resolve)
     }, {
       path: '/register',
       name: 'register',
-      component: Register
+      component: resolve => require(['../pages/register.vue'], resolve)
     }, {
       path: '/index',
       name:'index',
-      component: Index
+      component: resolve => require(['../pages/views/index.vue'], resolve)
     }, {
       path: '/shoppingcart',
       name: 'shoppingcart',
-      component: ShoppingCart
+      component: resolve => require(['../pages/views/shoppingcart.vue'], resolve)
     }, {
       path: '/goodsdetail',
       name: 'goodsdetail',
-      component: GoodsDetail
+      component: resolve => require(['../pages/views/goodsdetail.vue'], resolve)
     }, {
       path: '/goodslist',
       name: 'goodslist',
-      component: GoodsList
+      component: resolve => require(['../pages/views/goodslist.vue'], resolve)
     }, {
       path: '/usercenter/usercontrol',
-      component: UserCenter,
+      component: resolve => require(['../pages/views/usercenter.vue'], resolve),
       children: [
         {
           path: '',
           name: 'default-user-info',
-          component: () => import('../pages/views/user/info/userinfo.vue')
+          component: resolve => require(['../pages/views/user/info/userinfo.vue'], resolve)
         },
         {
           path: 'info',
           name: 'user-info',
-          component: () => import('../pages/views/user/info/userinfo.vue')
+          component: resolve => require(['../pages/views/user/info/userinfo.vue'], resolve)
         },
         {
           path: 'security',
           name: 'security-setting',
-          component: () => import('../pages/views/user/info/securitysetting.vue')
+          component: resolve => require(['../pages/views/user/info/securitysetting.vue'], resolve)
         },
         {
           path: 'address',
           name: 'delivery-address',
-          component: () => import('../pages/views/user/info/deliveryaddress.vue')
+          component: resolve => require(['../pages/views/user/info/deliveryaddress.vue'], resolve)
         }
       ]
     }, {
       path: '/usercenter/myorder',
-      component: UserCenter,
+      component: resolve => require(['../pages/views/usercenter.vue'], resolve),
       children: [
         {
           path: '',
           name: 'default-order',
-          component: () => import('../pages/views/user/order/allorders.vue')
+          component: resolve => require(['../pages/views/user/order/allorders.vue'], resolve)
         },
         {
           path: 'allorders',
           name: 'all-orders',
-          component: () => import('../pages/views/user/order/allorders.vue')
+          component: resolve => require(['../pages/views/user/order/allorders.vue'], resolve)
         },
         {
           path: 'obligation',
           name: 'obligation',
-          component: () => import('../pages/views/user/order/obligation.vue')
+          component: resolve => require(['../pages/views/user/order/obligation.vue'], resolve)
         },
         {
           path: 'deliverywaiting',
           name: 'delivery-waiting',
-          component: () => import('../pages/views/user/order/deliverywaiting.vue')
+          component: resolve => require(['../pages/views/user/order/deliverywaiting.vue'], resolve)
         },
         {
           path: 'receiverwaiting',
           name: 'receiver-waiting',
-          component: () => import('../pages/views/user/order/receiverwaiting.vue')
+          component: resolve => require(['../pages/views/user/order/receiverwaiting.vue'], resolve)
         },
         {
           path: 'commentwaiting',
           name: 'comment-waiting',
-          component: () => import('../pages/views/user/order/commentwaiting.vue')
+          component: resolve => require(['../pages/views/user/order/commentwaiting.vue'], resolve)
         }
       ]
     }, {
       path: '/usercenter/comment',
-      component: UserCenter,
+      component: resolve => require(['../pages/views/usercenter.vue'], resolve),
       children: [
         {
           path: '',
           name: 'default-comment',
-          component: () => import('../pages/views/user/comment/fromcomments.vue')
+          component: resolve => require(['../pages/views/user/comment/fromcomments.vue'], resolve)
         },
         {
           path: 'fromcomments',
           name: 'from-comment',
-          component: () => import('../pages/views/user/comment/fromcomments.vue')
+          component: resolve => require(['../pages/views/user/comment/fromcomments.vue'], resolve)
         },
         {
           path: 'tocomments',
           name: 'to-comments',
-          component: () => import('../pages/views/user/comment/tocomments.vue')
+          component: resolve => require(['../pages/views/user/comment/tocomments.vue'], resolve)
         }
       ]
     }

@@ -19,12 +19,6 @@ import SearchBar from "../components/SearchBar.vue"
 import Footer from '../components/Footer.vue';
 import Copyright from '../components/Copyright.vue';
 import ClassifyNav from '../components/ClassifyNav.vue';
-import Phone from '../components/indexpage/Phone.vue';
-import Accessories from '../components/indexpage/Accessories.vue';
-import Appliance from '../components/indexpage/Appliance.vue';
-import Hardware from '../components/indexpage/Hardware.vue';
-import Recommend from '../components/indexpage/Recommend.vue'
-import SimpleCopyright from '../components/SimpleCopyright.vue';
 export default {
   name: 'index',
   data() {
@@ -35,13 +29,13 @@ export default {
   components: {
     Header,
     SearchBar,
-    ClassifyNav,
-    Phone,
-    Accessories,
-    Appliance,
-    Hardware,
-    Recommend,
-    SimpleCopyright
+    ClassifyNav:resolve => require(['../components/ClassifyNav.vue'], resolve),
+    Phone:resolve => require(['../components/indexpage/Phone.vue'], resolve),
+    Accessories:resolve => require(['../components/indexpage/Accessories.vue'], resolve),
+    Appliance:resolve => require(['../components/indexpage/Appliance.vue'], resolve),
+    Hardware:resolve => require(['../components/indexpage/Hardware.vue'], resolve),
+    Recommend:resolve => require(['../components/indexpage/Recommend.vue'], resolve),
+    SimpleCopyright:resolve => require(['../components/SimpleCopyright.vue'], resolve)
   }
 }
 </script>

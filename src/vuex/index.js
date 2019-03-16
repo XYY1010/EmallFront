@@ -4,6 +4,8 @@ import Vuex from 'vuex';
 import user from './user';
 // 商品
 import item from './item';
+// 购物车
+ import shoppincart from './shoppingcart';
 
 Vue.use(Vuex);
 const state={
@@ -13,7 +15,8 @@ const store=new Vuex.Store({
   state,
   modules: {
     user,
-    item
+    item,
+    shoppincart
   }
 });
 export default store;

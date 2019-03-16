@@ -141,6 +141,7 @@ export default {
         for (var i = 0; i < this.shoppingCart.length; i++) {
           this.shoppingCart[i].price = this.shoppingCart[i].price.toFixed(2);
         }
+        this.$store.commit('initShoppingcart', this.shoppingCart);
       } else {
         this.$Notice.open({
           title: "错误" + this.result.data.errCode,

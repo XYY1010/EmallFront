@@ -321,12 +321,14 @@ export default {
   width: 100%;
 }
 .item-detail-img-row {
+  float: left;
   margin-top: 15px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 .item-detail-img-small {
+  margin-left: 17px;
   width: 68px;
   height: 68px;
   box-shadow: 0px 0px 8px #ccc;

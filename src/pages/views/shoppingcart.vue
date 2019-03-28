@@ -172,7 +172,9 @@ export default {
       if (this.goodsSelectList.length == 0) {
          this.$Message.error('未选中结算商品！');
       } else {
-        this.$router.push("/");
+        //我修改，在计算的时候先把购物车里面的东西sellItems里面
+        this.$store.commit("setSellItemsByShoppingCart", this.$store.getters.shoppingcart);
+        this.$router.push("/confirmOrders");
         // 带参数请求
       }
     },

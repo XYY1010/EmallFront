@@ -35,6 +35,21 @@ const router = new Router({
       name: 'goodslist',
       component: resolve => require(['../pages/views/goodslist.vue'], resolve)
     }, {
+      path: '/myOrders',
+      name: 'myOrders',
+      component: resolve => require(['../pages/views/usercenter.vue'], resolve),
+      children: [
+        {
+          path: '',
+          name: 'default-order1',
+          component: resolve => require(['../pages/views/user/order/allorders.vue'], resolve),
+        }
+      ]
+    }, {
+      path: '/confirmOrders',
+      name: 'confirmOrders',
+      component: resolve => require(['../pages/views/confirmOrders/ConfirmOrders.vue'], resolve),
+    },{
       path: '/usercenter/usercontrol',
       component: resolve => require(['../pages/views/usercenter.vue'], resolve),
       children: [

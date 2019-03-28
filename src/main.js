@@ -6,11 +6,13 @@ import router from './routes/router';
 import iView from 'iview';
 import store from './vuex';
 import axios from './axios_config.js';
+import VueLazyload from 'vue-lazyload';
 import 'iview/dist/styles/iview.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import 'element-ui/lib/theme-chalk/index.css';
 
+Vue.use(VueLazyload);
 Vue.use(BootstrapVue);
 Vue.use(ElementUI);
 Vue.use(iView);

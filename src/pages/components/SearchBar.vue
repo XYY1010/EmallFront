@@ -4,8 +4,8 @@
     <img src="../../assets/EmallIcon.png" class="logo" id="logo">
   </a>
   <div class="searchDiv">
-    <input type="text" placeholder="搜索 EMALL 商店/品牌" name="keyword">
-    <button class="searchButton" type="submit">搜索</button>
+    <input type="text" placeholder="搜索 EMALL 商店/品牌" name="keyword" v-model:value="searchdata">
+    <button class="searchButton" type="submit" @click="clickhandler()">搜索</button>
     <div class="searchBelow">
       <span><a href="#">手机</a><span>|</span></span>
       <span><a href="#">电脑</a><span>|</span></span>
@@ -18,6 +18,21 @@
 
 <script>
 export default {
+  name: 'searchBar',
+  data(){
+    return {
+      searchdata:""
+    };
+  },
+  methods:{
+    clickhandler(){
+      if(this.$route.path!='/goodslist'){
+        this.$router.push({path:'/goodslist',query:{search:this.searchdata}});
+      }else{
+        this.$emit('searchBtnClicked',this.searchdata);
+      }
+    }
+  }
 }
 </script>
 

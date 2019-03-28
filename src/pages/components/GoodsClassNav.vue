@@ -1,9 +1,9 @@
 <template>
     <div class="item-class-show">
-      <Row class="item-class-group" v-for="(items, index) in tagsInfo" :key="index">
-        <i-col class="item-class-name" span="3">{{ items.tagName }} : </i-col>
+      <Row class="item-class-group" v-for="(items, index) in categoryInfo" :key="index">
+        <i-col class="item-class-name" span="3">{{ items.father.categoryName }} : </i-col>
         <i-col class="item-class-select" span="21">
-          <span v-for="(item, subIndex) in items.tags" :key="subIndex">{{ item }}</span>
+          <span v-for="(item, subIndex) in items.childs" @click="categorySelected(index,subIndex)" :key="subIndex">{{ item.categoryName }}</span>
         </i-col>
       </Row>
     </div>
@@ -14,25 +14,33 @@ export default {
   name: 'GoodsClassNav',
   data () {
     return {
-      tagsInfo: [
-        {
-          tagName: '品牌',
-          tags: [ '华为(HUAWEI)', '三星(SAMSUNG)', 'MATE', '摩斯维(msvii)', 'OPPO', '莫凡(Mofi)', '耐尔金(NILLKIN)', '洛克(ROCK)', '亿色(ESR)', 'Apple', '优加' ]
-        },
-        {
-          tagName: '手机配件',
-          tags: [ '手机保护套', '苹果周边', '手机贴膜', '移动电源', '创意配件', '手机耳机', '手机支架' ]
-        },
-        {
-          tagName: '款式',
-          tags: [ '软壳', '硬壳', '翻盖式', '边框', '运动臂包', '钱包式', '定制', '防水袋', '布袋', '其他' ]
-        },
-        {
-          tagName: '材质',
-          tags: [ '塑料/PC', '硅胶', '金属', '电镀', '真皮', '树脂', '木质', '镶钻', '液态硅胶', 'TPU' ]
-        }
+      categoryInfo: [
+        
       ]
     };
+  },
+  methods:{
+    getCategory(){
+      this.$axios({
+        methods:'get',
+        url:'/category/getCategory'
+      }).then(res=>{
+          const data = res.data.data;
+          this.categoryInfo = data;
+      }).catch(error=>{
+        this.$Notice.open({
+          title:"错误",
+          desc:"获得分类信息错误"
+        });
+      });
+    },
+    categorySelected(index,subIndex){
+      //alert(this.categoryInfo[index].childs[subIndex].id);
+      this.$emit('categoryClicked',this.categoryInfo[index].childs[subIndex].id);
+    }
+  },
+  mounted(){
+    this.getCategory();
   }
 };
 </script>

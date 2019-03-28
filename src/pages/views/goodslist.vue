@@ -1,21 +1,21 @@
 <template>
   <div>
     <Header/>
-    <SearchBar/>
+    <SearchBar @searchBtnClicked='searchHandler'></SearchBar>
     <!-- <Sreach></Sreach> -->
     <!-- <GoodsListNav></GoodsListNav> -->
     <div class="container">
       <!-- 商品标签导航 -->
-      <GoodsClassNav></GoodsClassNav>
+      <GoodsClassNav @categoryClicked='categoryClickHandler'></GoodsClassNav>
       <!-- 商品展示容器 -->
       <div class="goods-box">
         <div class="goods-list-box">
           <div class="goods-list-tool">
             <ul>
-              <li v-for="(item,index) in goodsTool" :key="index" @click="orderBy(item.en, index)"><span :class="{ 'goods-list-tool-active': isAction[index]}">{{item.title}} <i :class="icon[index]"></i></span></li>
+              <li v-for="(item,index) in goodsTool" :key="index" @click="orderBy(item.en, index)"><span :class="{ 'goods-list-tool-active': isAction[index]}">{{item.title}} </span></li>
             </ul>
           </div>
-          <div class="goods-list">
+          <div class="goods-list" >
             <div class="goods-show-info" v-for="(item, index) in historyData" :key="index">
               <div class="">
                 <router-link to="/goodsDetail"><img :src="item.img" @click="handlerClickImg(index)" class="goods-show-img" /></router-link>
@@ -68,12 +68,12 @@ export default {
     return {
       totalItem:150,
       pageNum:1,
-      pageSize:10,//默认每页显示个数是10个
+      pageSize:20,//默认每页显示个数是20个
       sreachItem: '',
       isAction: [ true, false, false ],
       icon: [ 'el-icon-caret-top', 'el-icon-caret-down', 'el-icon-caret-down' ],
       goodsTool: [
-    {title: '综合', en: 'all'},
+    {title: '全部', en: 'all'},
         {title: '销量', en: 'sale'},
         {title: '价格', en: 'price'}
       ],
@@ -103,11 +103,12 @@ export default {
       this.historyData = this.ajaxHistoryData.slice(_start,_end);
     },
     orderBy (data, index) {
-      this.icon = [ 'el-icon-caret-down', 'el-icon-caret-down', 'el-icon-caret-down' ];
-      this.isAction = [ false, false, false ];
-      this.isAction[index] = true;
-      this.icon[index] = 'el-icon-caret-top';
+      // this.icon = [ 'el-icon-caret-down', 'el-icon-caret-down', 'el-icon-caret-down' ];
+      // this.isAction = [ false, false, false ];
+      // this.isAction[index] = true;
+      // this.icon[index] = 'el-icon-caret-top';
       if(index==0){
+        this.totalItem = this.goodsList.length;
         this.ajaxHistoryData = this.goodsList;
 				this.pageNum = 1;
 				this.changepage();
@@ -153,10 +154,43 @@ export default {
     },
     handlerClickImg(index){
       this.$store.commit('initItem', {item: {
-        itemId: this.goodsList[index].itemId,
-        price: this.goodsList[index].price,
-        stock: this.goodsList[index].stock
+        itemId: this.historyData[index].itemId,
+        price: this.historyData[index].price,
+        stock: this.historyData[index].stock,
+        catgoryId:this.historyData[index].catgoryId
       }});
+    },
+    categoryClickHandler(data){
+      this.ajaxHistoryData = this.goodsList.filter(x=>x.catgoryId == data);
+      this.totalItem = this.ajaxHistoryData.length;
+      // 初始化显示，小于每页显示条数，全显，大于每页显示条数，取前每页条数显示
+      if(this.ajaxHistoryData.length < this.pageSize){
+        this.historyData = this.ajaxHistoryData;
+      }else{
+        this.historyData = this.ajaxHistoryData.slice(0,this.pageSize);
+      }
+    },
+    searchHandler(data){
+      this.$axios({
+        method:'get',
+        url:'/item/getByKeyword',
+        params:{
+          keyword:data
+        }
+      }).then(res=>{
+        this.ajaxHistoryData = res.data.data;
+        this.totalItem = this.ajaxHistoryData.length;
+        if(this.ajaxHistoryData.length < this.pageSize){
+        this.historyData = this.ajaxHistoryData;
+        }else{
+          this.historyData = this.ajaxHistoryData.slice(0,this.pageSize);
+        }
+      }).catch(error=>{
+        this.$Notice.open({
+        title: "错误",
+        desc: "服务器开小差了,搜索失败"
+      });
+      });
     }
   },
   mounted () {
@@ -276,13 +310,13 @@ export default {
 .goods-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
 .goods-show-info{
-  width: 240px;
+  width: 260px;
   padding: 10px;
-  margin: 15px 0px;
-  border: 1px solid #fff;
+  margin-top : 20px;
+  margin-left: 25px;
+  border: 4px solid #fff;
   cursor: pointer;
 }
 .goods-show-info:hover{

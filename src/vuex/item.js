@@ -3,6 +3,7 @@ const state = {
     itemId: '',
     price: '',
     stock: '',
+    catgoryId:''
   }
 }
 

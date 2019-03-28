@@ -26,7 +26,7 @@
                 <span>商品介绍</span>
               </div>
               <div class="item-intro-img" ref="itemIntroGoods">
-                <img :src="item" alt="" v-for="(item,index) in data.goodsDetail" :key="index">
+                <img v-lazy="item" alt="" v-for="(item,index) in data.goodsDetail" :key="index">
               </div>
             </TabPane>
             <TabPane label="商品评价">

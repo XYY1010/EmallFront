@@ -7,7 +7,7 @@
       <i class="el-icon-arrow-right icon-chevron-right"></i>
     </span>
     <div class="slide" v-for="(item, index) in banners" v-show="index === curpage" :key="index" transition="fadeIn">
-      <a :href="item.sourceUrl" target="_blank">
+      <a  @click="imgClicked(item.itemId,item.sourceUrl)" target="_blank">
         <img class="imgBanners" :src="item.imgUrl" alt=""/>
       </a>
     </div>
@@ -34,6 +34,29 @@ export default {
     this.autoSlide();
   },
   methods: {
+    imgClicked(itemId,url){
+        this.$axios({
+        method:'get',
+        url:'/item/getGoodsListVOByItemId',
+        params:{
+          itemId:itemId
+        }
+      }).then(res=>{
+        let data = res.data.data;
+        this.$store.commit('initItem', {item: {
+        itemId: itemId,
+        price: data.price,
+        stock: data.stock,
+        catgoryId:data.catgoryId
+      }});
+        this.$router.push(url);
+      }).catch(error=>{
+        this.$Notice.open({
+        title: "错误",
+        desc: "获取商品信息错误"
+      });
+      });
+    },
     slidePre() {
       const lastPage = this.banners.length - 1;
       if (this.curpage > 0) {

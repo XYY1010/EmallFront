@@ -102,7 +102,6 @@
                             this.info = ans;
                             this.$store.commit('setAllOrders', ans);
                             this.$store.commit('setStatus', 1);
-                            //  console.log(this.$store.getters.getStatus);
                         })
                         .catch(error => {
                             console.log(error);

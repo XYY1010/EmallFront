@@ -8,7 +8,7 @@
     <Form ref="formItem" :model="formItem" :label-width="100" :rules="ruleValidate">
       <FormItem label="当前头像：">
         <img v-if="userInfo.avatarSrc !== ''" class="imgAvatar" :src="userInfo.avatarSrc" alt="">
-        <img v-if="userInfo.avatarSrc == ''" class="imgAvatar" src="" alt="">
+        <img v-if="userInfo.avatarSrc == ''" class="imgAvatar" src="https://raw.githubusercontent.com/XYY1010/WebImgSrc/master/test/8.jpeg" alt="">
       </FormItem>
       <FormItem label="昵称：" prop="nickname">
         <Input v-model="formItem.nickname" style="width: 400px;"/>
@@ -85,6 +85,7 @@ export default {
   },
   mounted() {
     this.userInfo = this.$store.getters.user;
+    console.log(this.userInfo);
   }
 }
 </script>

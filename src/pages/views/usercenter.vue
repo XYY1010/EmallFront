@@ -7,7 +7,7 @@
       <Layout>
         <Sider class="side" hide-trigger>
             <img v-if="userInfo.avatarSrc !== ''" class="imgAvatar" :src="userInfo.avatarSrc" alt="">
-            <img v-if="userInfo.avatarSrc == ''" class="imgAvatar" src="" alt="">
+            <img v-if="userInfo.avatarSrc == ''" class="imgAvatar" src="https://raw.githubusercontent.com/XYY1010/WebImgSrc/master/test/8.jpeg" alt="">
             <Menu theme="light" width="auto" :open-names="['1']">
               <Submenu v-for="subMenu in menu" :name="subMenu.id" :key="subMenu.id">
                 <template slot="title">

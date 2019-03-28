@@ -16,8 +16,9 @@ const mutations = {
         state.shoppingcart = payload.slice(0);
         sessionStorage.setItem('shoppingcart', JSON.stringify(state.shoppingcart));
     },
-    editShoppingcart(state, payload) {
-        state.shoppingcart = payload.shoppingcart;
+    addShoppingcart(state, payload) {
+      console.log(payload);
+        state.shoppingcart.push(payload.shoppingcart);
         sessionStorage.setItem('shoppingcart', JSON.stringify(state.shoppingcart));
     }
 };

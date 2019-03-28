@@ -7,7 +7,7 @@
 	     <div class="registerDiv">
         <table class="registerTable" align="center">
     			<tr>
-    				<td  class="registerTip registerTableLeftTD">设置会员名</td>
+    				<td  class="registerTip registerTableLeftTD"><Icon type="ios-contact" size="20" style="margin: 0 10px 5px 0"/>设置会员名</td>
     				<td></td>
     			</tr>
   			<tr>
@@ -18,8 +18,32 @@
             </FormItem>
           </td>
   			</tr>
+        <tr>
+          <td  class="registerTip registerTableLeftTD"><Icon type="ios-phone-portrait" size="20" style="margin: 0 10px 5px 0"/>设置手机号</td>
+          <td  class="registerTableRightTD">同一手机号只能注册一次</td>
+        </tr>
+        <tr>
+  				<td class="registerTableLeftTD">手机号</td>
+  				<td  class="registerTableRightTD">
+            <FormItem prop='telephone'>
+              <Input v-model='form.telephone' style="margin-top:20px;" placeholder="手机号" size="large"></Input>
+            </FormItem>
+          </td>
+  			</tr>
+        <tr>
+          <td  class="registerTip registerTableLeftTD"><Icon type="ios-mail-outline" size="20" style="margin: 0 10px 5px 0"/>设置邮箱号</td>
+          <td  class="registerTableRightTD">同一邮箱号只能注册一次</td>
+        </tr>
+        <tr>
+  				<td class="registerTableLeftTD">邮箱号</td>
+  				<td  class="registerTableRightTD">
+            <FormItem prop='email'>
+              <Input v-model='form.email' style="margin-top:20px;" placeholder="邮箱号" size="large"></Input>
+            </FormItem>
+          </td>
+  			</tr>
   			<tr>
-  				<td  class="registerTip registerTableLeftTD">设置登陆密码</td>
+  				<td  class="registerTip registerTableLeftTD"><Icon type="ios-lock" size="20" style="margin: 0 10px 5px 0"/>设置登陆密码</td>
   				<td  class="registerTableRightTD">登陆时验证，保护账号信息</td>
   			</tr>
   			<tr>
@@ -62,7 +86,9 @@ export default {
       form: {
         username: '',
         password: '',
-        repeatpassword: ''
+        repeatpassword: '',
+        telephone: '',
+        email: ''
       },
       rule: {
         username: [
@@ -74,6 +100,14 @@ export default {
         repeatpassword: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
           { validator: this.checkPassword}
+        ],
+        telephone: [
+          { required: true, message: '手机号不能为空', trigger: 'blur' },
+          { validator: this.checkPhone }
+        ],
+        email: [
+          { required: true, message: '邮箱地址不能为空', trigger: 'blur' },
+          { validator: this.checkEmail }
         ]
       }
     }
@@ -90,16 +124,60 @@ export default {
         }
       }
     },
+    checkPhone(rule, value, callback) {
+        if (value.length == 0) {
+          callback();
+        }
+        if (!/^1[34578]\d{9}$/.test(value)) {
+          callback("手机号码错误");
+        } else {
+          callback();
+        }
+    },
+    checkEmail(rule, value, callback) {
+        if (value.length == 0) {
+          callback();
+        }
+        if (!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(value)) {
+          callback("邮箱号错误");
+        } else {
+          callback();
+        }
+    },
     handleSubmit(e) {
       this.$refs[e].validate((valid) => {
         if (valid) {
-          console.log(this.form);
-          this.$Message.success('注册成功！');
-          setTimeout(() => {
-            this.$router.push('/');
-          }, 1000);
+          this.$axios({
+            method: 'post',
+            url: '/user/register',
+            params: {
+              username: this.form.username,
+              password: this.form.password,
+              confirmPassword: this.form.repeatpassword,
+              telephone: this.form.telephone,
+              email: this.form.email
+            }
+          }).then(res => {
+            let result = res.data;
+            if (result.status == 'success') {
+              this.$Message.success('注册成功！');
+              setTimeout(() => {
+                this.$router.push('/login');
+              }, 1000);
+            } else {
+              this.$Notice.error({
+                title: "错误" + result.data.errCode,
+                desc: result.data.errMsg
+              });
+            }
+          }).catch(err => {
+            this.$Notice.error({
+              title: "错误",
+              desc: "服务器开小差了,请稍后再试"
+            });
+          });
         } else {
-          this.$Message.error('注册失败！');
+          this.$Message.error('请重新填写！');
         }
       });
       this.$refs[e].resetFields();

@@ -117,15 +117,15 @@
                 return sum;
             },
             addresses: function () {
-                let x = [];
-                x = this.$store.getters.getAllAddresses;
+                //  let x = [];
+                //  x = this.$store.getters.getAllAddresses;
                 // console.log(x.length);
                 return this.$store.getters.getAllAddresses;
             },
             products: function () {
-                let x = [];
-                x = this.$store.getters.sellItems;
-                //console.log(x.length);
+                //    let x = [];
+                //    x = this.$store.getters.sellItems;
+                // console.log(this.$store.getters.sellItems);
                 return this.$store.getters.sellItems;
             },
             totalPrice: function () {
@@ -135,12 +135,25 @@
                 return this.address + ' ' + this.addressDetail;
             }
         },
-
+        mounted() {
+            this.initDefaultAddress();
+        },
         methods: {
-            /*  initAddresses: function () {
-                  this.addresses = this.$store.getters.addresses;
-                  console.log(this.addresses.length);
-              },*/
+            initDefaultAddress: function () {
+                let address = [];
+                address = this.$store.getters.getAllAddresses;
+                for (let i = 0; i < address.length; i++) {
+                    let deliveryAddress = address[i];
+                    if (deliveryAddress.isDefault === true) {
+                        this.addressId = deliveryAddress.addressId;
+                        this.name = deliveryAddress.receiverName;
+                        this.phone = deliveryAddress.receiverPhone;
+                        this.address = deliveryAddress.address;
+                        this.addressDetail = deliveryAddress.addressDetail;
+                        break;
+                    }
+                }
+            },
 
             changeBorder: function (deliveryAddress) {
                 // deliveryAddress.isDefault=false;
@@ -172,8 +185,8 @@
                     });
                 }
                 //发送订单的信息给服务器,用post方法
-                console.log('id:'+this.$store.getters.user.userName);
-                const userId=this.$store.getters.user.userId;
+              //  console.log('id:' + this.$store.getters.user.userName);
+                const userId = this.$store.getters.user.userId;
                 this.$axios.post('/createOrders', {
                         orderDO: {
                             //暂时用name来代替
@@ -202,13 +215,15 @@
                     }
                 )
                     .then((response) => {
-                        console.log(response.data.data);
-                        this.$store.commit('setOrderId',response.data.data);
+                       // console.log(response.data.data);
+                        this.$store.commit('setOrderId', response.data.data);
+                        this.$router.push('/pay');
                     })
                     .catch((error) => {
-                        console.log(error.data)
+                      //  console.log("错误");
+                        console.log(error.errCode+' '+error.errMsg)
                     });
-                this.$router.push('/pay');
+
             }
         },
 

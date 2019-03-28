@@ -10,8 +10,8 @@
     			<div class="login_acount_text">账户登录</div>
 
           <div class="loginInput" >
-            <FormItem prop="user">
-      				<Input v-model="form.user" placeholder="手机/会员名/邮箱" type="text" size="large">
+            <FormItem prop="username">
+      				<Input v-model="form.username" placeholder="会员名" type="text" size="large">
                 <Icon type="ios-person" slot="prepend"></Icon>
               </Input>
             </FormItem>
@@ -49,11 +49,11 @@ export default {
   data() {
     return {
       form: {
-        user: '',
+        username: '',
         password: ''
       },
       rule: {
-        user: [
+        username: [
           {required: true, message: '请输入正确的用户名', trigger: 'blur'}
         ],
         password: [
@@ -65,21 +65,45 @@ export default {
   methods: {
     handleSubmit(e) {
       this.$refs[e].validate((valid) => {
+        console.log(this.form);
         if (valid) {
-          console.log(this.form);
-          this.$Message.success('登录成功！');
-          this.$store.commit('initUser', {user: {
-              userId: '42346568078196736',
-              userName: this.form.user,
-              password: this.form.password,
-              phone: '17845897418',
-              address: ['浙江省', '宁波市', '鄞州区'],
-              email: 'zsvip@163.com',
-              avatarSrc: 'https://raw.githubusercontent.com/XYY1010/WebImgSrc/master/test/3.jpg'
-          }});
-          setTimeout(() => {
-            this.$router.push('/index');
-          }, 1000);
+          this.$axios({
+            method: 'post',
+            url: '/user/login',
+            params: {
+              userName: this.form.username,
+              password: this.form.password
+            }
+          }).then(res => {
+            let result = res.data;
+            if (result.status == 'success') {
+              this.$Message.success('登录成功！');
+              this.$store.commit('initUser', {user: {
+                userId: result.data.userId,
+                userName: result.data.userName,
+                phone: result.data.telephone,
+                address: result.data.address,
+                email: result.data.email,
+                avatarSrc: result.data.avatarUrl,
+                realName: result.data.realName,
+                birthday: result.data.birthday,
+                hometown: result.data.hometown
+              }});
+              setTimeout(() => {
+                this.$router.push('/index');
+              }, 1000);
+            } else {
+              this.$Notice.error({
+                title: "错误" + result.data.errCode,
+                desc: result.data.errMsg
+              });
+            }
+          }).catch(err => {
+            this.$Notice.error({
+              title: "错误",
+              desc: "服务器开小差了,请稍后再试"
+            });
+          });
         } else {
           this.$Message.error('登录失败！');
         }

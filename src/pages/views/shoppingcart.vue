@@ -21,7 +21,7 @@
       <div class="pay-box">
         <p> <span>应付总金额</span> <span class="money"></span> <Icon type="logo-yen"></Icon> {{totalPrice.toFixed(2)}}</p>
         <div class="clear-btn">
-          <Button type="error" long size="large" @click="clear()">结算</Button>
+          <Button type="error" :disabled="isDisabled" long size="large" @click="clear()">结算</Button>
         </div>
       </div>
     </div>
@@ -43,6 +43,7 @@ export default {
       rmIndex: -1,
       goodsSelectList: [],
       userInfo: {},
+      goodsSelectList: [],
       columns: [
         {
           type: 'selection',
@@ -157,6 +158,10 @@ export default {
         price += item.price * item.amount;
       })
       return price;
+    },
+    isDisabled(){
+      if(this.goodsSelectList.length===0) return true;
+      return false;
     }
   },
   methods: {
@@ -172,9 +177,23 @@ export default {
          this.$Message.error('未选中结算商品！');
       } else {
         //我修改，在计算的时候先把购物车里面的东西sellItems里面
-        this.$store.commit("setSellItemsByShoppingCart", this.$store.getters.shoppingcart);
+        let ans=[];
+        const goodsSelectList=this.goodsSelectList;
+        for (let i = 0; i <goodsSelectList.length ; i++) {
+          let select=goodsSelectList[i];
+          ans.push({
+            amount: select.amount,
+            attrImg: select.attrImg,
+            attrVals: select.attrVals,
+            //   cartId: select.,
+            itemId: select.itemId,
+            itemTitle: select.itemTitle,
+            price: select.price,
+            // stockId: 1
+          })
+        }
+        this.$store.commit("setSellItemsByShoppingCart", ans);
         this.$router.push("/confirmOrders");
-        console.log(this.$refs.selection.getSelection());
         // 带参数请求
       }
     },
@@ -238,8 +257,12 @@ export default {
     }
   },
   mounted() {
-    this.userInfo = this.$store.getters.user;
-    this.shoppingCart = this.$store.getters.shoppingcart;
+    this.$Spin.show();
+    setTimeout(() => {
+      this.userInfo = this.$store.getters.user;
+      this.shoppingCart = this.$store.getters.shoppingcart;
+      this.$Spin.hide();
+    }, 1000);
   }
 }
 </script>

@@ -23,6 +23,14 @@ const router = new Router({
       name:'index',
       component: resolve => require(['../pages/views/index.vue'], resolve)
     }, {
+      path: '/pay',
+      name: 'pay',
+      component: resolve => require(['../pages/views/pay/pay.vue'], resolve)
+    },{
+      path: '/aliPay',
+      name: 'aliPay',
+      component: resolve => require(['../pages/views/pay/aliPay.vue'], resolve)
+    }, {
       path: '/shoppingcart',
       name: 'shoppingcart',
       component: resolve => require(['../pages/views/shoppingcart.vue'], resolve)

@@ -2,7 +2,7 @@
   <div>
     <Header/>
     <UserCenterSearch/>
-    <div class="user-center-div">
+  <div class="user-center-div">
       <Divider/>
       <Layout>
         <Sider class="side" hide-trigger>

@@ -30,7 +30,7 @@
         </template>
 
         <span class="float-right">
-          <a href="#">
+          <a href="javascript:void(0);" @click="toMyOrder()">
             我的订单
           </a>
           <Dropdown placement="bottom-end">
@@ -111,6 +111,9 @@ export default {
     },
     toUserCenter() {
       this.$router.push('/usercenter/usercontrol');
+    },
+    toMyOrder() {
+      this.$router.push('/usercenter/myorder');
     },
     checkCart() {
       this.$router.push('/shoppingcart');

@@ -4,10 +4,6 @@
       <img src="../../assets/EmallIcon.png" class="logo" id="logo">
     </a>
     <span class="user-center-title"> <h1>我的 EMALL</h1> </span>
-    <div class="searchDiv float-right">
-      <input type="text" placeholder="搜索 EMALL 商品" name="keyword">
-      <button class="searchButton" type="submit">搜索</button>
-    </div>
   </div>
 </template>
 

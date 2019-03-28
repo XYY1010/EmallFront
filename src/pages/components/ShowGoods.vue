@@ -167,6 +167,10 @@ export default {
 		},
 		//添加购物车
     addShoppingCartBtn () {
+      if(this.userInfo==null){
+        this.$router.push("/login");
+        return;
+      }
 			this.$axios({
 				method:'post',
 				url:'/shoppingcart/addnew',
@@ -201,7 +205,21 @@ export default {
     },
 		//立即购买
 		buyNowBtn(){
-
+      if(this.userInfo==null){
+        this.$router.push("/login");
+        return;
+      }
+      this.$store.commit('setSellItems',{
+          "amount": this.amount,
+          "attrImg": this.data.goodsImg[0],
+          "attrVals":this.getAttrVals(),
+          "cartId": this.itemInfo.categoryId,
+          "itemId":this.itemInfo.itemId,
+          "itemTitle":this.data.itemTitle,
+          "price":this.price,
+          "stockId":this.stockId
+        });
+      this.$router.push("/confirmOrders");
 		},
 		//处理商品图片字符串
     stringHandler(str){
@@ -219,6 +237,7 @@ export default {
       }).then(res=>{
         const data = res.data.data;
 				this.data.setMeal = data.meal;
+        //console.log(this.data.setMeal);
         this.data.itemTitle = data.itemTitle;
         this.data.itemSales = data.itemSales;
         this.data.goodsImg = this.stringHandler(data.itemDetailImage);
@@ -321,12 +340,14 @@ export default {
   width: 100%;
 }
 .item-detail-img-row {
+  float: left;
   margin-top: 15px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 .item-detail-img-small {
+  margin-left: 17px;
   width: 68px;
   height: 68px;
   box-shadow: 0px 0px 8px #ccc;

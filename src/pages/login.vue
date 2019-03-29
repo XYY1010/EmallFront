@@ -65,7 +65,6 @@ export default {
   methods: {
     handleSubmit(e) {
       this.$refs[e].validate((valid) => {
-        console.log(this.form);
         if (valid) {
           this.$axios({
             method: 'post',
@@ -81,6 +80,8 @@ export default {
               this.$store.commit('initUser', {user: {
                 userId: result.data.userId,
                 userName: result.data.userName,
+                password: this.form.password,
+                gender: result.data.gender,
                 phone: result.data.telephone,
                 address: result.data.address,
                 email: result.data.email,

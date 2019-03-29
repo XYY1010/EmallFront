@@ -115,8 +115,29 @@ export default {
             this.showModifyEmail = true;
             this.showCompleteEmail = false;
             // 后台修改
+            this.$axios({
+              method: 'post',
+              url: '/user/modifyEmail',
+              params: {
+                email: this.formItem.email
+              }
+            }).then(res => {
+              let result = res.data;
+              if (result.status == 'success') {
+                this.$Message.success('修改邮箱成功！');
+              } else {
+                this.$Notice.error({
+                  title: "错误" + result.data.errCode,
+                  desc: result.data.errMsg
+                });
+              }
+            }).catch(err => {
+              this.$Notice.error({
+                title: "错误",
+                desc: "服务器开小差了,请稍后再试"
+              });
+            });
           }
-          this.$Message.success('修改成功!');
         } else {
           this.$Message.error('修改失败!');
         }
@@ -137,8 +158,29 @@ export default {
             this.showModifyPhone = true;
             this.showCompletePhone = false;
             // 后台修改
+            this.$axios({
+              method: 'post',
+              url: '/user/modifyTel',
+              params: {
+                tel: this.formItem.phone
+              }
+            }).then(res => {
+              let result = res.data;
+              if (result.status == 'success') {
+                this.$Message.success('修改手机号成功！');
+              } else {
+                this.$Notice.error({
+                  title: "错误" + result.data.errCode,
+                  desc: result.data.errMsg
+                });
+              }
+            }).catch(err => {
+              this.$Notice.error({
+                title: "错误",
+                desc: "服务器开小差了,请稍后再试"
+              });
+            });
           }
-          this.$Message.success('修改成功!');
         } else {
           this.$Message.error('修改失败!');
         }
@@ -213,8 +255,31 @@ export default {
       this.$refs[e].validate((valid) => {
         if (valid) {
           // 后台修改
-          this.strength = this.checkStrong(this.formModal.confirmPassword);
-          this.$Message.success('修改成功!');
+          this.$axios({
+            method: 'post',
+            url: '/user/modifyPassword',
+            params: {
+              oldPwd: this.formModal.oldPassword,
+              newPwd: this.formModal.newPassword,
+              confirmPwd: this.formModal.confirmPassword
+            }
+          }).then(res => {
+            let result = res.data;
+            if (result.status == 'success') {
+              this.$Message.success('修改密码成功！');
+                this.strength = this.checkStrong(this.formModal.confirmPassword);
+            } else {
+              this.$Notice.error({
+                title: "错误" + result.data.errCode,
+                desc: result.data.errMsg
+              });
+            }
+          }).catch(err => {
+            this.$Notice.error({
+              title: "错误",
+              desc: "服务器开小差了,请稍后再试"
+            });
+          });
         } else {
           this.$Message.error('修改失败!');
         }

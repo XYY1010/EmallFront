@@ -25,8 +25,10 @@ const mutations = {
         sessionStorage.setItem('user', JSON.stringify(state.user));
     },
     editUser(state, payload) {
-        state.user = payload.user;
-        sessionStorage.setItem('user', JSON.stringify(state.user));
+      for (var variable in payload.user) {
+        state.user[variable] = payload.user[variable];
+      }
+      sessionStorage.setItem('user', JSON.stringify(state.user));
     }
 };
 export default {

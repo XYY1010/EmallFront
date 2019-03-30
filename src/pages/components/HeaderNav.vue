@@ -21,8 +21,8 @@
             <a href="javascript:void(0);" @click="toUserCenter()">会员中心</a>
             <DropdownMenu slot="list">
               <div class="user-info-box">
-                <Avatar v-if="userInfo.avatarSrc !== ''" :src="userInfo.avatarSrc" size="large"></Avatar>
-                <Avatar v-if="userInfo.avatarSrc === ''" style="background-color: #87d068; color: #FFFFFF" icon="ios-person" size="large"/>
+                <Avatar v-if="userInfo.avatarSrc !== null" :src="userInfo.avatarSrc" size="large"></Avatar>
+                <Avatar v-if="userInfo.avatarSrc === null" style="background-color: #87d068; color: #FFFFFF" icon="ios-person" size="large"/>
                 <a href="javascript:void(0);" @click="toLogin()">退出登录</a>
               </div>
             </DropdownMenu>

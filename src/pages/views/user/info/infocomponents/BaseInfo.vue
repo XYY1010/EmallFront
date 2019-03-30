@@ -7,8 +7,8 @@
     </Alert>
     <Form ref="formItem" :model="formItem" :label-width="100" :rules="ruleValidate">
       <FormItem label="当前头像：">
-        <img v-if="userInfo.avatarSrc !== ''" class="imgAvatar" :src="userInfo.avatarSrc" alt="">
-        <img v-if="userInfo.avatarSrc == ''" class="imgAvatar" src="https://raw.githubusercontent.com/XYY1010/WebImgSrc/master/test/8.jpeg" alt="">
+        <img v-if="userInfo.avatarSrc !== null" class="imgAvatar" :src="userInfo.avatarSrc" alt="">
+        <img v-if="userInfo.avatarSrc == null" class="imgAvatar" src="https://raw.githubusercontent.com/XYY1010/WebImgSrc/master/test/8.jpeg" alt="">
       </FormItem>
       <FormItem label="会员名：" prop="nickname">
         <Input v-model="formItem.nickname" style="width: 400px;"/>
@@ -70,21 +70,40 @@ export default {
     handleSubmit(e) {
       this.$refs[e].validate((valid) => {
         if (valid) {
-          var residence = this.formItem.residence[0] + '/' + this.formItem.residence[1] + '/' + this.formItem.residence[2];
-          var hometown = this.formItem.hometown[0] + '/' + this.formItem.hometown[1] + '/' + this.formItem.hometown[2];
+          var residence = '';
+          var hometown = '';
+          for (var i = 0; i < this.formItem.residence.length; i++) {
+            if (this.formItem.residence[i] == undefined || this.formItem.residence[i] == '') {
+              break;
+            }
+            residence += this.formItem.residence[i];
+            if (i <= this.formItem.residence.length - 1) {
+              residence += '/';
+            }
+          }
+          for (var i = 0; i < this.formItem.hometown.length; i++) {
+            if (this.formItem.hometown[i] == undefined || this.formItem.hometown[i] == '') {
+              break;
+            }
+            hometown += this.formItem.hometown[i];
+            if (i <= this.formItem.hometown.length - 1) {
+              hometown += '/';
+            }
+          }
           var datee = new Date(this.formItem.birthday).toJSON();
           var date = new Date(+new Date(datee)+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
           date = date.split(" ")[0];
           var gender = 1;
-          if (this.formItem.gender = "male") {
+          if (this.formItem.gender == "male") {
             gender = 1;
           } else {
-            gender = 0;
+            gender = 2;
           }
           this.$axios({
             method: 'post',
             url: '/user/userInfo',
             params: {
+              userId: this.userInfo.userId,
               userName: this.formItem.nickname,
               realname: this.formItem.realname,
               gender: gender,
@@ -95,15 +114,17 @@ export default {
           }).then(res => {
             let result = res.data;
             if (result.status == 'success') {
-              this.$Message.success('登录成功！');
-              console.log(this.formItem);
               this.$Message.success('保存成功！');
-              setTimeout(() => {
-                this.$router.push('/');
-              }, 1000);
-              setTimeout(() => {
-                this.$router.push('/index');
-              }, 1000);
+              this.$store.commit('editUser', {user: {
+                userId: result.data.userId,
+                userName: result.data.userName,
+                gender: result.data.gender,
+                address: result.data.address,
+                realName: result.data.realName,
+                birthday: result.data.birthday,
+                hometown: result.data.hometown,
+                avatarSrc: result.data.avatarUrl
+              }});
             } else {
               this.$Notice.error({
                 title: "错误" + result.data.errCode,
@@ -124,7 +145,6 @@ export default {
   },
   mounted() {
     this.userInfo = this.$store.getters.user;
-    console.log(this.userInfo);
     this.formItem.nickname = this.userInfo.userName;
     this.formItem.realname = this.userInfo.realName;
     if (this.userInfo.gender == true) {

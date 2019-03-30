@@ -111,20 +111,24 @@ export default {
       this.$refs[name].validate((valid) => {
         if (valid) {
           if (!this.emailInputEnable) {
-            this.emailInputEnable = true;
-            this.showModifyEmail = true;
-            this.showCompleteEmail = false;
             // 后台修改
             this.$axios({
               method: 'post',
               url: '/user/modifyEmail',
               params: {
+                userId: this.userInfo.userId,
                 email: this.formItem.email
               }
             }).then(res => {
               let result = res.data;
               if (result.status == 'success') {
+                this.emailInputEnable = true;
+                this.showModifyEmail = true;
+                this.showCompleteEmail = false;
                 this.$Message.success('修改邮箱成功！');
+                this.$store.commit('editUser', {user: {
+                  email: result.data
+                }});
               } else {
                 this.$Notice.error({
                   title: "错误" + result.data.errCode,
@@ -154,20 +158,24 @@ export default {
       this.$refs[name].validate((valid) => {
         if (valid) {
           if (!this.phoneInputEnable) {
-            this.phoneInputEnable = true;
-            this.showModifyPhone = true;
-            this.showCompletePhone = false;
             // 后台修改
             this.$axios({
               method: 'post',
               url: '/user/modifyTel',
               params: {
+                userId: this.userInfo.userId,
                 tel: this.formItem.phone
               }
             }).then(res => {
               let result = res.data;
               if (result.status == 'success') {
+                this.phoneInputEnable = true;
+                this.showModifyPhone = true;
+                this.showCompletePhone = false;
                 this.$Message.success('修改手机号成功！');
+                this.$store.commit('editUser', {user: {
+                  phone: result.data
+                }});
               } else {
                 this.$Notice.error({
                   title: "错误" + result.data.errCode,
@@ -259,6 +267,7 @@ export default {
             method: 'post',
             url: '/user/modifyPassword',
             params: {
+              userId: this.userInfo.userId,
               oldPwd: this.formModal.oldPassword,
               newPwd: this.formModal.newPassword,
               confirmPwd: this.formModal.confirmPassword
@@ -267,7 +276,10 @@ export default {
             let result = res.data;
             if (result.status == 'success') {
               this.$Message.success('修改密码成功！');
-                this.strength = this.checkStrong(this.formModal.confirmPassword);
+              this.$store.commit('editUser', {user: {
+                password: this.formModal.confirmPassword
+              }});
+              this.strength = this.checkStrong(this.formModal.confirmPassword);
             } else {
               this.$Notice.error({
                 title: "错误" + result.data.errCode,

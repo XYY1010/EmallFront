@@ -33,7 +33,7 @@
             title="提示"
             @on-ok="ok"
             @on-cancel="cancel">
-            <p>确定将该商品从购物车中移除吗？</p>
+            <p>确定将该地址移除吗？</p>
         </Modal>
       </div>
     </div>
@@ -50,6 +50,7 @@ export default {
       loading: false,
       modalStatus: false,
       rmIndex: -1,
+      userInfo: {},
       formItem: {
         addressInfo: [],
         addressDetail: '',
@@ -75,31 +76,38 @@ export default {
       },
       columns: [
         {
+          title: '地址ID',
+          key: 'addressId',
+          width: 105,
+          align: 'center'
+        },
+        {
           title: '收货人',
           key: 'receiverName',
-          width: 80,
+          width: 75,
           align: 'center'
         },
         {
           title: '所在地区',
-          key: 'addressInfo',
-          width: 130,
+          key: 'address',
+          width: 100,
           align: 'center'
         },
         {
           title: '详细地址',
           key: 'addressDetail',
-          width: 220,
+          width: 150,
           align: 'center'
         },
         {
           title: '邮编',
-          key: 'postcode',
+          key: 'postalCode',
+          width: 90,
           align: 'center'
         },
         {
           title: '手机',
-          key: 'phone',
+          key: 'receiverPhone',
           width: 120,
           align: 'center'
         },
@@ -122,11 +130,11 @@ export default {
         },
         {
           title: ' ',
-          key: 'defaultAddress',
+          key: 'isDefault',
           width: 120,
           align: 'center',
           render: (h, params) => {
-            if (params.row.defaultAddress) {
+            if (params.row.isDefault) {
               return h('div', [
                   h('p', {
                     attrs: {
@@ -200,45 +208,92 @@ export default {
         }
     },
     handleSubmit(e) {
+      if (this.addressTable.length >= 11) {
+        this.$Message.error('最多只能添加11条地址记录！');
+        return;
+      }
       this.$refs[e].validate((valid) => {
           if (valid) {
-            let address = '';
-            let postcode = '';
+            var address = '';
+            var postcode = '';
             for (let i = 0; i < this.formItem.addressInfo.length; i++) {
-              address += this.formItem.addressInfo[i] + ' ';
+              address += this.formItem.addressInfo[i] + '/';
             }
             if (this.formItem.postcode == "") {
               postcode = "000000";
             } else {
               postcode = this.formItem.postcode;
             }
-            var newAddressInfo = {
-              receiverName: this.formItem.receiverName,
-              addressInfo: address,
-              addressDetail: this.formItem.addressDetail,
-              postcode: postcode,
-              phone: this.formItem.phone,
-              defaultAddress: false
-            }
-            this.addressTable.push(newAddressInfo);
             // 后端添加
-            this.$Message.success('新增成功！');
+            this.$axios({
+              method: 'post',
+              url: '/user/addAddress',
+              params: {
+                userId: this.userInfo.userId,
+                address: address,
+                addressDetail: this.formItem.addressDetail,
+                postalCode: postcode,
+                receiverName: this.formItem.receiverName,
+                isDefault: false,
+                receiverPhone: this.formItem.phone
+              }
+            }).then(res => {
+              let result = res.data;
+              if (result.status == 'success') {
+                this.$Message.success('新增成功！');
+                console.log(result.data);
+                this.addressTable.push(result.data);
+              } else {
+                this.$Notice.error({
+                  title: "错误" + result.data.errCode,
+                  desc: result.data.errMsg
+                });
+              }
+            }).catch(err => {
+              this.$Notice.error({
+                title: "错误",
+                desc: "服务器开小差了,请稍后再试"
+              });
+            });
           } else {
             this.$Message.error('新增失败！');
           }
         });
       this.$refs[e].resetFields();
+      this.formItem.postcode = '';
     },
     remove(index) {
-      this.addressTable.splice(index, 1);
       // 后端数据库删除请求
+      this.addressTable[index].addressId
+      this.$axios({
+        method: 'get',
+        url: '/user/delAddress',
+        params: {
+          userId: this.userInfo.userId,
+          addressId: this.addressTable[index].addressId
+        }
+      }).then(res => {
+        let result = res.data;
+        if (result.status == 'success') {
+          this.$Message.success('地址删除成功！');
+          this.addressTable.splice(index, 1);
+        } else {
+          this.$Notice.error({
+            title: "错误" + result.data.errCode,
+            desc: result.data.errMsg
+          });
+        }
+      }).catch(err => {
+        this.$Notice.error({
+          title: "错误",
+          desc: "服务器开小差了,请稍后再试"
+        });
+      });
     },
     ok() {
       if(this.rmIndex != -1) {
         this.remove(this.rmIndex);
-        this.$Message.success('移除成功！');
         this.rmIndex = -1;
-        // 后台数据更新
       }
     },
     cancel() {
@@ -248,14 +303,42 @@ export default {
     changeDefaultAddress(index) {
       for (let i = 0; i < this.addressTable.length; i++) {
         if (i == index) {
-          this.addressTable[i].defaultAddress = true;
+          this.addressTable[i].isDefault = true;
         } else {
-          this.addressTable[i].defaultAddress = false;
+          this.addressTable[i].isDefault = false;
         }
       }
       // 后台数据库更新
+    },
+    getAllAddresses() {
+      this.$axios({
+        method: 'get',
+        url: '/user/getAddresses',
+        params: {
+          userId: this.userInfo.userId,
+        }
+      }).then(res => {
+        let result = res.data;
+        if (result.status == 'success') {
+          this.addressTable = result.data;
+        } else {
+          this.$Notice.error({
+            title: "错误" + result.data.errCode,
+            desc: result.data.errMsg
+          });
+        }
+      }).catch(err => {
+        this.$Notice.error({
+          title: "错误",
+          desc: "服务器开小差了,请稍后再试"
+        });
+      });
     }
   },
+  mounted() {
+    this.userInfo = this.$store.getters.user;
+    this.getAllAddresses();
+  }
 
 }
 </script>

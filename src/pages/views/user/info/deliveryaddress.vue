@@ -158,32 +158,7 @@ export default {
           }
         }
       ],
-      addressTable: [
-        {
-          receiverName: '柴大凯',
-          addressInfo: '浙江省 宁波市 鄞州区',
-          addressDetail: '浙江省宁波市高新区江南路1689号浙江大学软件学院2#公寓',
-          postcode: '000000',
-          phone: '17826871231',
-          defaultAddress: true
-        },
-        {
-          receiverName: '柴二凯',
-          addressInfo: '上海 上海市 松江区',
-          addressDetail: '上海市松江区叶榭镇济众路300号上海农友植物医院有限公司',
-          postcode: '000000',
-          phone: '17826871245',
-          defaultAddress: false
-        },
-        {
-          receiverName: '柴三凯',
-          addressInfo: '北京 北京市 海淀区',
-          addressDetail: '北京市海淀区双清路30号清华大学',
-          postcode: '000000',
-          phone: '17456871245',
-          defaultAddress: false
-        },
-      ]
+      addressTable: []
     }
   },
   methods: {

@@ -52,7 +52,10 @@
     }
 
     .change-border {
-        border: 1px solid yellow;
+        border: 1px solid #A013EB;
+        background-color: #A013EB;
+        color: #FFF;
+        font-weight: bold;
         padding: 10px;
         margin: 10px;
     }

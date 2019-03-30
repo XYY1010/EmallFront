@@ -39,7 +39,6 @@ Object.defineProperty(Vue.prototype, '$axios', { value: axios });
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start();
-  console.log("start");
   next();
 });
 

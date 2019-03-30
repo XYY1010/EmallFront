@@ -149,7 +149,6 @@ export default {
                   on: {
                     click: () => {
                       this.changeDefaultAddress(params.index);
-                      this.$Message.success('默认地址修改成功！');
                     }
                   }
                 }, '设为默认地址')
@@ -284,6 +283,29 @@ export default {
         }
       }
       // 后台数据库更新
+      this.$axios({
+        method: 'get',
+        url: '/user/setDefaultAddress',
+        params: {
+          userId: this.userInfo.userId,
+          addressId: this.addressTable[index].addressId
+        }
+      }).then(res => {
+        let result = res.data;
+        if (result.status == 'success') {
+          this.$Message.success('设置默认地址成功！');
+        } else {
+          this.$Notice.error({
+            title: "错误" + result.data.errCode,
+            desc: result.data.errMsg
+          });
+        }
+      }).catch(err => {
+        this.$Notice.error({
+          title: "错误",
+          desc: "服务器开小差了,请稍后再试"
+        });
+      });
     },
     getAllAddresses() {
       this.$axios({

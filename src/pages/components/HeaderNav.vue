@@ -157,6 +157,29 @@ export default {
         desc: "服务器开小差了,请稍后再试"
       });
     });
+
+    this.$axios({
+      method: 'get',
+      url: '/user/getAddresses',
+      params: {
+        userId: this.userInfo.userId,
+      }
+    }).then(res => {
+      let result = res.data;
+      if (result.status == 'success') {
+        this.$store.commit('setAddresses', result.data);
+      } else {
+        this.$Notice.error({
+          title: "错误" + result.data.errCode,
+          desc: result.data.errMsg
+        });
+      }
+    }).catch(err => {
+      this.$Notice.error({
+        title: "错误",
+        desc: "服务器开小差了,请稍后再试"
+      });
+    });
   }
 }
 </script>

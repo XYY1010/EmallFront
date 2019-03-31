@@ -7,8 +7,18 @@
     </Alert>
     <div class="position-set">
       <Upload
+        ref="upload"
+        name="upfile" 
+        :headers="headers"
+        :on-error="uploadError" 
+        :on-success="addUploadSuccess" 
+        :format="['jpg','jpeg','png']" 
+        :max-size="2048"
+        :before-upload="beforeAvatarUpload"
+        :on-format-error="handleFormatError" 
+        :on-exceeded-size="handleMaxSize"
         type="drag"
-        action="//jsonplaceholder.typicode.com/posts/">
+        action="http://localhost:8090/file/uploading">
         <div style="padding: 20px 0">
             <Icon type="ios-cloud-upload" size="100" style="color: #3399ff"></Icon>
             <p>点击或拖拽上传头像</p>
@@ -22,13 +32,33 @@
 export default {
     data() {
       return {
-        imageUrl: ''
+        imageUrl: '',
+        headers:{
+        'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+        'Access-Control-Allow-Origin': '*'
+        }
       };
     },
     methods: {
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-        console.log(file.raw);
+      handleFormatError(file) {
+        this.$Notice.warning({
+          title: '文件格式不正确',
+          desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+        })
+      },
+      handleMaxSize(file) {
+        this.$Notice.warning({
+          title: '超出文件大小限制',
+          desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+        })
+      },
+      addUploadSuccess(res,file,fileList){
+        this.$Message.success("上传成功");
+        this.imageUrl = res.data;
+        alert(this.imageUrl);
+      },
+      uploadError(a,b,c){
+        this.$Message.error(a.data);
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

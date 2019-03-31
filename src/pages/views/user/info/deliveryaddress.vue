@@ -215,7 +215,6 @@ export default {
               let result = res.data;
               if (result.status == 'success') {
                 this.$Message.success('新增成功！');
-                console.log(result.data);
                 this.addressTable.push(result.data);
               } else {
                 this.$Notice.error({

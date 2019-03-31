@@ -6,16 +6,14 @@
         <template slot="desc">点击上传区域或拖拽图片入区域进行上传！</template>
     </Alert>
     <div class="position-set">
-      <el-upload
-        class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :show-file-list="false"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </el-upload>
-      <Button type="primary" class="btn-upload" size="large">上传头像</Button>
+      <Upload
+        type="drag"
+        action="//jsonplaceholder.typicode.com/posts/">
+        <div style="padding: 20px 0">
+            <Icon type="ios-cloud-upload" size="100" style="color: #3399ff"></Icon>
+            <p>点击或拖拽上传头像</p>
+        </div>
+    </Upload>
   </div>
   </div>
 </template>

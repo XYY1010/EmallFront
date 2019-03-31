@@ -101,7 +101,7 @@ export default {
   },
   data () {
     return {
-      itemId:'',
+    itemId:'',
 	  stockId:'',
 	  mealId:[],
 	  itemInfo:{},
@@ -210,14 +210,14 @@ export default {
         return;
       }
       this.$store.commit('setSellItems',{
-          "amount": this.amount,
-          "attrImg": this.data.goodsImg[0],
-          "attrVals":this.getAttrVals(),
-          "cartId": this.itemInfo.categoryId,
-          "itemId":this.itemInfo.itemId,
-          "itemTitle":this.data.itemTitle,
-          "price":this.price,
-          "stockId":this.stockId
+          amount: this.count,
+          attrImg: this.data.goodsImg[0],
+          attrVals:this.getAttrVals(),
+          cartId: this.itemInfo.categoryId,
+          itemId:this.itemInfo.itemId,
+          itemTitle:this.data.itemTitle,
+          price:this.price,
+          stockId:this.stockId
         });
       this.$router.push("/confirmOrders");
 		},

@@ -11,7 +11,6 @@ const actions = {}
 const mutations = {
     setAddresses(state, payload) {
       state.addresses = payload.slice(0);
-      console.log(payload);
       sessionStorage.setItem('addresses', JSON.stringify(state.shoppingcart));
     }
 };

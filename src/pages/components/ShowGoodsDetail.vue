@@ -62,7 +62,7 @@
                     <p class="remarks-content">{{item.content}}</p>
                     <p class="remarks-sub">
                       <span class="remarks-item">{{item.goodsMeal}}</span>
-                      <span class="remarks-time">{{item.createTime.substr(0,10)}}</span>
+                      <span class="remarks-time">{{item.createTime.substring(0,10)}}</span>
                     </p>
                   </div>
                 </div>
@@ -189,6 +189,9 @@ export default {
 				}
 			}).then(res=>{
 				this.dataTable = res.data.data;
+        if (this.dataTable.length == 1 && this.dataTable[0].createTime == null) {
+          this.dataTable.splice(0, 1);
+        }
 				this.handleListApproveHistory();
 				this.getDifferentCommentTypeNumber();
 			}).catch(error=>{

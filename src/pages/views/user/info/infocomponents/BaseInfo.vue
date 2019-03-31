@@ -8,7 +8,7 @@
     <Form ref="formItem" :model="formItem" :label-width="100" :rules="ruleValidate">
       <FormItem label="当前头像：">
         <img v-if="userInfo.avatarSrc !== null" class="imgAvatar" :src="userInfo.avatarSrc" alt="">
-        <img v-if="userInfo.avatarSrc == null" class="imgAvatar" src="https://raw.githubusercontent.com/XYY1010/WebImgSrc/master/test/8.jpeg" alt="">
+        <img v-if="userInfo.avatarSrc == null" class="imgAvatar" src="http://139.199.125.60/avatar/8.jpeg" alt="">
       </FormItem>
       <FormItem label="会员名：" prop="nickname">
         <Input v-model="formItem.nickname" style="width: 400px;"/>

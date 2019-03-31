@@ -8,14 +8,14 @@
     <div class="position-set">
       <Upload
         ref="upload"
-        name="upfile" 
+        name="upfile"
         :headers="headers"
-        :on-error="uploadError" 
-        :on-success="addUploadSuccess" 
-        :format="['jpg','jpeg','png']" 
+        :on-error="uploadError"
+        :on-success="addUploadSuccess"
+        :format="['jpg','jpeg','png']"
         :max-size="2048"
         :before-upload="beforeAvatarUpload"
-        :on-format-error="handleFormatError" 
+        :on-format-error="handleFormatError"
         :on-exceeded-size="handleMaxSize"
         type="drag"
         action="http://localhost:8090/file/uploading">
@@ -36,7 +36,8 @@ export default {
         headers:{
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
         'Access-Control-Allow-Origin': '*'
-        }
+        },
+        userInfo: {}
       };
     },
     methods: {
@@ -55,7 +56,32 @@ export default {
       addUploadSuccess(res,file,fileList){
         this.$Message.success("上传成功");
         this.imageUrl = res.data;
-        alert(this.imageUrl);
+        console.log(this.imageUrl);
+        this.$axios({
+          method: 'post',
+          url: '/user/modifyAvatar',
+          params: {
+            userId: this.userInfo.userId,
+            avatar: this.imageUrl
+          }
+        }).then(res => {
+          let result = res.data;
+          if (result.status == 'success') {
+            this.$store.commit('editUser', {user: {
+              avatarSrc: this.imageUrl
+            }});
+          } else {
+            this.$Notice.error({
+              title: "错误" + result.data.errCode,
+              desc: result.data.errMsg
+            });
+          }
+        }).catch(err => {
+          this.$Notice.error({
+            title: "错误",
+            desc: "服务器开小差了,请稍后再试"
+          });
+        });
       },
       uploadError(a,b,c){
         this.$Message.error(a.data);
@@ -73,6 +99,9 @@ export default {
         }
         return isJPG && isLt2M;
       }
+    },
+    mounted() {
+      this.userInfo = this.$store.getters.user;
     }
   }
 </script>
